@@ -1,0 +1,3 @@
+RewriteEngine On
+
+RewriteRule ^/?([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/?$ /?controller=$1&action=$2 [L,QSA,NC]
