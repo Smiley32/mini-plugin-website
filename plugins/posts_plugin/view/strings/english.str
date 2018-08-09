@@ -1,0 +1,23 @@
+file: Choose a file
+cancel: Cancel
+post: Post
+upload_file: Upload a file
+error_database: An error has occured. Please try again later
+error_not_connected: You must be connected to upload a file
+error_file_doesnt_exists: The file you are trying to add is not on the server. The file upload has failed or the file has already been added.
+error_file_exists: The file you are trying to add is already present on the server
+error_file_extension: Your file is not a type supported by the server
+error_no_tags: You must choose at least one tag
+error_not_connected_tags: You must be connected to update tags
+error_similars: Unable to get similar images
+update: Update
+toggle_tags: Toggle tags
+infos: Informations
+comments: Comments
+more: More like this
+post: Post
+add_title: Upload post
+similar_images_title: Similar images :
+similar_colors_title: With similar colors :
+similar_tags_title: With similar tags :
+edit: Edit

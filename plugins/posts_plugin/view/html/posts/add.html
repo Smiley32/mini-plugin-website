@@ -1,0 +1,20 @@
+[~errors~]
+  <div class="error notification is-danger">
+    {~description~}
+  </div>
+[~~]
+
+<div class="uploadContent center">
+  <input type="file" class="file" id="file_upload" onchange="upload(this)" style="display:none"/>
+  <button class="button" id="file_button" onclick="document.getElementById('file_upload').click()">{>upload_file<}</button>
+
+  <hr/>
+  <img src="" id="sampleImg"/>
+
+  <form method="GET" id="postForm">
+    <input type="text" name="file" id="uploadedFile" hidden />
+
+    <a href="/posts/add" class="button is-warning">{>cancel<}</a>
+    <input id="submitUpload" type="submit" class="button is-info" name="submit" value="{>post<}" disabled />
+  </form>
+</div>

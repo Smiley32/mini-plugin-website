@@ -8,6 +8,8 @@ $controller = "error";
 $action = "404";
 $subAction = null;
 
+session_start();
+
 if(isset($_GET['controller'], $_GET['action'])) {
   $controller = $_GET['controller'];
   $action = $_GET['action'];

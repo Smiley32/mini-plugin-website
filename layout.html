@@ -5,6 +5,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="/bulma.min.css">
     [~styles~]
       <link rel="stylesheet" type="text/css" href="{~path~}">
     [~~]
@@ -12,7 +13,15 @@
     <title>{{title}}</title>
   </head>
   <body>
-    {{body}}
+    {{nav/top}}
+
+    <div class="body">
+      {{body}}
+
+      <!-- {{nav/bottom}} -->
+    </div>
+
+    <script src="/functions.js"></script>
     [~scripts~]
       <script src="{~path~}"></script>
     [~~]

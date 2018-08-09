@@ -1,0 +1,45 @@
+.heart {
+	width: 1.2rem;
+	height: 1.2rem;
+	position: absolute;
+	transform-origin: 50% 50%;
+	transform: rotate(45deg) scale(1);
+
+  top: 0.3rem;
+  right: 0.5rem;
+  cursor: pointer;
+}
+
+.heart.loved::before {
+  background-color: #e74c3c;
+}
+
+.heart.loved::after {
+  background-color: #e74c3c;
+}
+
+.heart::before {
+	content: "";
+	position: absolute;
+	display: block;
+	border-top-left-radius: 0.4rem;
+	border-bottom-left-radius: 0.4rem;
+	background-color: #bdc3c7;
+	width: inherit;
+	height: 0.8rem;
+	top: 0.4rem;
+	left: 0;
+}
+
+.heart::after {
+  content: "";
+	position: absolute;
+	display: block;
+	background-color: #bdc3c7;
+	width: 0.8rem;
+	top: 0;
+	left: 0.4rem;
+	height: inherit;
+	border-top-left-radius: 0.4rem;
+	border-top-right-radius: 0.4rem;
+}

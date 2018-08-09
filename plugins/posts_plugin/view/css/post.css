@@ -1,0 +1,25 @@
+.tab-content {
+  max-width: 1000px;
+  margin: auto;
+  padding: 5px 10px;
+}
+
+.tab-content table {
+  width: 100%;
+}
+
+.leftColumn {
+  width: 40%;
+}
+
+.description {
+  min-height: 30vh;
+}
+
+.uploadContent button {
+  margin: 10px;
+}
+
+#sampleImg {
+  max-height: 60vh;
+}

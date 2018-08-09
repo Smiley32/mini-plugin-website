@@ -1,0 +1,48 @@
+[~errors~]
+<div class="error">
+  {~description~}
+</div>
+[~~]
+
+<aside class="menu" id="tagPanel">
+  <form method="GET">
+    {{tags/tagger}}
+
+    <input id="toTrigger" class="button is-success" type="submit" name="submit" value="{>search<}" />
+  </form>
+</aside>
+
+<div id="floating">
+  <button class="button toggleTags" onclick="toggleTags()">{>toggle_tags<}</button>
+  <button class="button is-success" onclick="toTrigger.click()">{>search<}</button>
+</div>
+
+<div id="pageContent" class="content">
+  <div class="list">
+    <div class="columns is-multiline is-mobile">
+    [~list~]
+      <div class="column is-4-mobile is-3-tablet is-2-desktop">
+        <div class="card">
+          <div class="card-image">
+            <a href="/posts/show?id={~id~}">
+              <img class="image" src="/data/thumbnails/{~hash~}"/>
+            </a>
+            {?isConnected?}
+              <div class="heart {~favorite~}" onclick="toggleFavorite(this, {~id~})"></div>
+            {??}
+          </div>
+          <div class="card-content">
+            #{~id~} - {~width~}x{~height~}<br/>
+            <a href="#">{~uploader~}</a>
+          </div>
+        </div>
+      </div>
+    [~~]
+    </div>
+  </div>
+
+  <nav class="pagination" role="navigation">
+    <a class="pagination-previous" onclick="goPage({{previousPage}})">{>previous<}</a>
+    <a class="pagination-next" onclick="goPage({{nextPage}})">{>next<}</a>
+  </nav>
+</div>

@@ -1,0 +1,11 @@
+signup: Sign up
+signin: Sign in
+cancel: Cancel
+pseudo_placeholder: Enter pseudo
+pseudo_label: Pseudo :
+password_label: Password :
+password_confirmation_label: Confirm password :
+error_existing_user: This pseudo is already used
+error_database: An error has occured. Please try again later
+error_already_connected: You are already connected
+error_wrong_password_pseudo: Wrong pseudo or password

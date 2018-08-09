@@ -1,0 +1,54 @@
+#tagPanel {
+  height: 100%;
+  width: 500px;
+  position: fixed;
+  left: -500px;
+  overflow-x: hidden;
+  padding: 10px;
+  transition: .5s;
+  max-width: 500px;
+}
+
+#tagPanel.opened {
+  left: 0;
+}
+
+@media(max-width: 500px) {
+  #tagPanel.opened {
+    width: 100%;
+  }
+}
+
+#pageContent {
+  transition: margin-left .5s;
+  width: 100vw;
+}
+
+@media(min-width: 1088px) {
+  #pageContent {
+    width: auto;
+  }
+}
+
+#pageContent.moved {
+  margin-left: 500px;
+}
+
+#floating {
+  position: fixed;
+  right: 3em;
+  top: 0.5em;
+  z-index: 100;
+}
+
+.tagger input {
+  margin: 10px 0 5px 10px;
+}
+
+.tagger button {
+  margin: 10px 10px 5px 0;
+}
+
+.tagger .title {
+  text-align: center;
+}

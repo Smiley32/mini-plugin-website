@@ -1,0 +1,11 @@
+<hr/>
+<div class="center">
+  <h3 class="title">{>posts_title<} </h3><h1 class="title is-1"><div class="odometer">0</div></h1>
+</div>
+<hr/>
+
+<script>
+setTimeout(function(){
+    document.getElementsByClassName('odometer')[0].innerHTML = {{postCount}};
+}, 1000);
+</script>

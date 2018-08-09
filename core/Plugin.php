@@ -4,15 +4,23 @@ class Plugin {
   private $_name = null;
   private $_strings = null;
   private $_class = null;
-  
+
   function __construct($name) {
     $this->_name = $name;
   }
-  
+
   public function getStrings() {
     if(null === $this->_strings) {
       $language = 'english'; // TODO: not here
-      $file = fopen('plugins/' . $this->_name . '/view/strings/' . $language . '.str', 'r');
+
+      $filePath = 'plugins/' . $this->_name . '/view/strings/' . $language . '.str';
+      if(file_exists($filePath)) {
+        $file = fopen($filePath, 'r');
+      } else {
+        $this->_strings = array();
+        return array();
+      }
+
       if($file) {
         $this->_strings = array();
         while(false !== ($line = fgets($file))) {
@@ -21,24 +29,25 @@ class Plugin {
           }
         }
       }
-    }    
+    }
     return null === $this->_strings ? false : $this->_strings;
   }
-  
+
   public function call($controller, $action, $subAction = null) {
     require_once('core/Controller.php');
-    
+
     $class = ucfirst($controller) . 'Controller';
     require_once('plugins/' . $this->_name . '/controller/' . $class . '.php');
-    
+
     $this->_class = new $class($action, $subAction);
     $this->_class->call();
   }
-  
+
   public function compileView($controller, $action, $subAction = null) {
     require_once('core/View.php');
     if($this->_class->isAjax()) {
-      $v = new View($this->_class->reserved['body'], $this, false);
+      $reserved = $this->_class->getReserved();
+      $v = new View($reserved['body'], $this, false);
       Settings::getCurrentPage()->addView($v);
       $v->setAjax(true);
     } else {
@@ -59,7 +68,7 @@ class Plugin {
       $v->setTitle($this->_class->getTitle());
     }
   }
-  
+
   public function display($controller, $action, $subAction = null) {
     require_once('core/View.php');
     if($this->_class->isAjax()) {
@@ -86,7 +95,7 @@ class Plugin {
       echo $v->getContent();
     }
   }
-  
+
   public function getName() {
     return $this->_name;
   }

@@ -1,0 +1,125 @@
+[~errors~]
+  <div class="error notification is-danger">
+    {~description~}
+  </div>
+[~~]
+
+<aside class="menu" id="tagPanel">
+  <form id="tagger" method="POST">
+    {{tags/tagger}}
+
+    <input id="toTrigger" type="submit" value="{>update<}" name="submit" class="button is-warning" />
+  </form>
+</aside>
+
+<div id="floating">
+  <button class="button toggleTags" onclick="toggleTags()">{>toggle_tags<}</button>
+  <button class="button is-success" onclick="toTrigger.click()">{>update<}</button>
+</div>
+
+<div id="pageContent">
+  {?isImage?}
+  <div class="center">
+    <img src="{{path}}" />
+  </div>
+  {??}
+
+  <div class="tabs is-centered">
+    <ul>
+      <li id="infos" class="is-active"><a>{>infos<}</a></li>
+      <li id="comments"><a>{>comments<}</a></li>
+      <li id="more"><a>{>more<}</a></li>
+      {?isConnected?}
+        <li id="edit"><a>{>edit<}</a></li>
+      {??}
+    </ul>
+  </div>
+
+  <div id="infosContent" class="tab-content">
+    <p class="description">
+      Here is a potential short description of the current post
+    </p>
+
+    <hr/>
+
+    <table>
+      <tr><td class="leftColumn">Uploader:</td><td><a>Smiley32</a></td></tr>
+      <tr><td class="leftColumn">Date:</td><td>02-08-2018</td></tr>
+      <tr><td class="leftColumn">Hash:</td><td>0f15214744fab15d1c7v5a</td></tr>
+    </table>
+  </div>
+
+  <div id="commentsContent" class="tab-content">
+    Test comments
+  </div>
+
+  <div id="moreContent" class="tab-content">
+    <h3 class="title is-5">{>similar_images_title<}</h3>
+    <div class="columns is-multiline is-mobile">
+      [~similars~]
+        <div class="column is-6-mobile is-4-tablet is-4-desktop">
+          <div class="card">
+            <div class="card-image">
+              <a href="/posts/show?id={~id~}">
+                <img class="image center" src="/data/thumbnails/{~hash~}"/>
+              </a>
+            </div>
+            <div class="card-content">
+              #{~id~} - {~width~}x{~height~}<br/>
+              <a href="#{~uploader_id~}">{~uploader~}</a>
+            </div>
+          </div>
+        </div>
+      [~~]
+    </div>
+    <hr/>
+    <h3 class="title is-5">{>similar_colors_title<}</h3>
+    <div class="columns is-multiline is-mobile">
+      [~colors~]
+        <div class="column is-6-mobile is-4-tablet is-4-desktop">
+          <div class="card">
+            <div class="card-image">
+              <a href="/posts/show?id={~id~}">
+                <img class="image center" src="/data/thumbnails/{~hash~}"/>
+              </a>
+            </div>
+            <div class="card-content">
+              #{~id~} - {~width~}x{~height~}<br/>
+              <a href="#{~uploader_id~}">{~uploader~}</a>
+            </div>
+          </div>
+        </div>
+      [~~]
+    </div>
+    <hr/>
+    <h3 class="title is-5">{>similar_tags_title<}</h3>
+    <div class="columns is-multiline is-mobile">
+      [~similarTagsPosts~]
+        <div class="column is-6-mobile is-4-tablet is-4-desktop">
+          <div class="card">
+            <div class="card-image">
+              <a href="/posts/show?id={~id~}">
+                <img class="image center" src="/data/thumbnails/{~hash~}"/>
+              </a>
+            </div>
+            <div class="card-content">
+              #{~id~} - {~width~}x{~height~}<br/>
+              <a href="#{~uploader_id~}">{~uploader~}</a>
+            </div>
+          </div>
+        </div>
+      [~~]
+    </div>
+  </div>
+
+  {?isConnected?}
+    <div id="editContent" class="tab-content">
+      Edition
+    </div>
+  {??}
+</div>
+
+
+<script>
+  var postId = {{postId}};
+</script>

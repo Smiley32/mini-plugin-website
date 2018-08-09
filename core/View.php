@@ -3,12 +3,12 @@
 class View {
   private $_content = null;
   private $_plugin = null;
-  
+
   private $_title = '';
   private $_isAjax = false;
   private $_scripts = array();
   private $_styles = array();
-  
+
   function __construct($file, $plugin, $isFromPath = true) {
     $this->_plugin = $plugin;
     if($isFromPath) {
@@ -20,11 +20,11 @@ class View {
       $this->_content = $file;
     }
   }
-  
+
   public function setTitle($title) {
     $this->_title = $title;
   }
-  
+
   public function getTitle() {
     if(null !== $this->_plugin) {
       $strings = $this->_plugin->getStrings();
@@ -37,45 +37,45 @@ class View {
     }
     return $this->_title;
   }
-  
+
   public function getPlugin() {
     return $this->_plugin;
   }
-  
+
   public function setAjax($isAjax) {
     $this->_isAjax = $isAjax;
   }
-  
+
   public function isAjax() {
     return $this->_isAjax;
   }
-  
+
   public function setScripts($scripts) {
     $this->_scripts = $scripts;
   }
-  
+
   /// Filename, not filepath
   public function addScript($fileName) {
     $this->_scripts[] = $fileName;
   }
-  
+
   public function getScripts() {
     return $this->_scripts;
   }
-  
+
   public function setStyles($styles) {
     $this->_styles = $styles;
   }
-  
+
   // Filename, not filepath
   public function addStyles($fileName) {
     $this->_styles[] = $fileName;
   }
-  
+
   public function getStyles() {
     return $this->_styles;
   }
-  
+
   public function compile($data) {
     $this->_content = $this->_replaceForeach($data);
     $this->_content = $this->_replaceIf($data);
@@ -86,12 +86,12 @@ class View {
     // $this->_content = $this->_replaceLinks();
     $this->_content = $this->_replaceRoutes();
   }
-  
+
   public function getContent() {
     return $this->_content === null ? '' : $this->_content;
   }
-  
-  private function _replaceRoutes() {
+
+  public function _replaceRoutes() {
     return preg_replace_callback(
       '|{{([_a-zA-Z0-9]+)/([_a-zA-Z0-9]+)}}|'
       , function($m) {
@@ -105,11 +105,11 @@ class View {
       }, $this->_content
     );
   }
-  
+
   private function _replaceLinks() {
     // TODO..
   }
-  
+
   private function _replaceVariables($data) {
     return preg_replace_callback(
       '/{{([_a-zA-Z0-9]+)}}/'
@@ -118,10 +118,10 @@ class View {
       }, $this->_content
     );
   }
-  
+
   private function _replaceStrings() {
     $strings = $this->_plugin->getStrings();
-    
+
     return preg_replace_callback(
       '/{>([_a-zA-Z0-9]+)<}/'
       , function($m) use ($strings) {
@@ -129,7 +129,7 @@ class View {
       }, $this->_content
     );
   }
-  
+
   private function _replaceForeach($data) {
     return preg_replace_callback(
       '/\[~(.+?)~\](.*?)\[~~\]/ms'
@@ -147,15 +147,24 @@ class View {
       }, $this->_content
     );
   }
-  
+
   private function _replaceIf($data) {
     return preg_replace_callback(
-      '/{\?(.+?)\?}(.*?){\?\?}/ms'
+      '/{\?(.+?)\?}(!?.*?){\?\?}/ms'
       , function($m) use ($data) {
-        if($data[$m[1]]) {
-          return $m[2];
+        if($m[1][0] == '!') {
+          $index = substr($m[1], 1);
+          if(!$data[$index]) {
+            return $m[2];
+          } else {
+            return '';
+          }
         } else {
-          return '';
+          if($data[$m[1]]) {
+            return $m[2];
+          } else {
+            return '';
+          }
         }
       }, $this->_content
     );
