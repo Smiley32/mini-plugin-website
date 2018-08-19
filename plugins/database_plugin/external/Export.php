@@ -351,7 +351,7 @@ class Export_database_plugin {
 
     $db = self::getInstance();
 
-    $tagArray = explode(' ', $tags);
+    $tagArray = explode(';', $tags);
 
     $req = $db->prepare('SELECT tags.* FROM tags, post_tag WHERE post_tag.tag_id=tags.id AND post_tag.post_id=:postId');
     $ret = $req->execute(array('postId' => $postId));
