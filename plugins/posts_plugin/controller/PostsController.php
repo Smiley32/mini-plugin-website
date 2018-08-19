@@ -90,6 +90,46 @@ class PostsController extends Controller {
     $this->data['path'] = '/data/posts/' . $post['hash'];
     $this->data['postId'] = $id;
 
+    $this->data['description'] = $post['description'];
+    $this->data['uploader'] = $post['uploader'];
+    $this->data['date'] = $post['upload_date'];
+    $this->data['hash'] = $post['hash'];
+
+    $size = $post['size'];
+    $unit = 'o';
+    if($size >= 1024) {
+      $size /= 1024;
+      $unit = 'kio';
+    }
+    if($size >= 1024) {
+      $size /= 1024;
+      $unit = 'mio';
+    }
+    if($size >= 1024) {
+      $size /= 1024;
+      $unit = 'gio';
+    }
+    $this->data['size'] = number_format($size, 2) . ' ' . $unit;
+
+    $this->data['dimensions'] = $post['width'] . ' x ' . $post['height'];
+    $this->data['extension'] = $post['ext'];
+
+    switch($post['rating']) {
+      case 1:
+        $this->data['rating'] = '{>safe_rating<}';
+        break;
+      case 2:
+        $this->data['rating'] = '{>questionable_rating<}';
+        break;
+      case 3:
+        $this->data['rating'] = '{>explicit_rating<}';
+        break;
+      default:
+        $this->data['rating'] = '{>unknown_rating<}';
+        break;
+    }
+
+
     $this->data['isConnected'] = Plugins::callFunction('users_plugin', 'isConnected');
 
     // Smimilar images

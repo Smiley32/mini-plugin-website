@@ -425,7 +425,7 @@ class Export_database_plugin {
     exit();
 /*/
 
-    $req = $db->prepare('SELECT posts.*, file_ext.ext FROM posts, file_ext WHERE posts.type_ext_id=file_ext.id AND posts.id=:id');
+    $req = $db->prepare('SELECT posts.*, file_ext.ext, users.pseudo AS uploader FROM posts, file_ext, users WHERE posts.type_ext_id=file_ext.id AND posts.id=:id AND posts.uploader_id=users.id');
     $ret = $req->execute(array('id' => $id));
 
     return !$ret ? false : $req->fetch();
@@ -858,6 +858,7 @@ CREATE TABLE posts (
   rating      INT         NOT NULL,
   uploader_id INT         NOT NULL,
   perceptual_hash BIGINT  NOT NULL,
+  description TEXT DEFAULT '',
   PRIMARY KEY (id),
   FOREIGN KEY (type_ext_id) REFERENCES file_ext(id),
   FOREIGN KEY (uploader_id) REFERENCES users(id)

@@ -21,3 +21,14 @@ similar_images_title: Similar images :
 similar_colors_title: With similar colors :
 similar_tags_title: With similar tags :
 edit: Edit
+hash: Hash:
+date: Date:
+uploader: Uploader:
+rating: Rating:
+safe_rating: Safe
+questionable_rating: Questionable
+explicit_rating: Explicit
+unknown_rating: Unknown
+size: Size:
+dimensions: Dimensions:
+extension: Extension:
