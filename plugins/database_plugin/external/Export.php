@@ -186,19 +186,35 @@ class Tree {
       $sqlSeparator = '>';
     }
 
-    if('size' == $keyword) {
-      return ' posts.size' . $sqlSeparator . $value . ' ';
-    } elseif('width' == $keyword) {
-      return ' posts.width' . $sqlSeparator . $value . ' ';
-    } elseif('height' == $keyword) {
-      return ' posts.height' . $sqlSeparator . $value . ' ';
-    } elseif('id' == $keyword) {
-      return ' posts.id' . $sqlSeparator . $value . ' ';
-    } else {
-      // Error
-      error_log('ERROR: unknown keyword');
-      exit();
+    $ret = ' ';
+    switch($keyword) {
+      case 'size':
+        $ret = ' posts.size' . $sqlSeparator . $value . ' ';
+        break;
+      case 'width':
+        $ret = ' posts.width' . $sqlSeparator . $value . ' ';
+        break;
+      case 'height':
+        $ret = ' posts.height' . $sqlSeparator . $value . ' ';
+        break;
+      case 'id':
+        $ret = ' posts.id' . $sqlSeparator . $value . ' ';
+        break;
+      case 'ext':
+        if(preg_match('/^[a-zA-Z]+$/', $value)) {
+          $ret = ' posts.type_ext_id = (SELECT id FROM file_ext WHERE ext' . $sqlSeparator . '\'' . $value . '\')';
+        }
+        break;
+      case 'pool':
+        if(preg_match('/^[0-9]+$/', $value)) {
+          $ret = ' posts.id IN (SELECT post_id FROM pool_post WHERE pool_id' . $sqlSeparator . $value . ')';
+        }
+        break;
+      default:
+        error_log('ERROR: unknown keyword');
     }
+
+    return $ret;
   }
 }
 
