@@ -61,7 +61,8 @@ class UsersController extends Controller {
     }
 
     // Add user
-    $ret = Plugins::callFunction('database_plugin', 'addUser', $pseudo, $password);
+    $model = $this->getModel();
+    $ret = $model->addUser($pseudo, $password);
     if(true !== $ret) {
       switch($ret) {
         case 1:
@@ -84,17 +85,6 @@ class UsersController extends Controller {
     }
   }
 
-  protected function action_favorites() {
-    if(!Plugins::callFunction('users_plugin', 'isConnected')) {
-      Settings::redirect('index', 'counter');
-      exit();
-    }
-
-    $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
-
-    $favorites = Plugins::callFunction('database_plugin', 'getFavorites', $user['id']);
-  }
-
   protected function action_api() {
     $this->setAjax(true);
 
@@ -103,7 +93,9 @@ class UsersController extends Controller {
       if($_GET['get'] == 'favorites' && isset($_GET['user']) && '' != $_GET['user']) {
         $user = $_GET['user'];
 
-        $favorites = Plugins::callFunction('database_plugin', 'getFavorites', $user);
+        // Doesn't work anymore
+        // $favorites = Plugins::callFunction('database_plugin', 'getFavorites', $user);
+        exit();
 
         if(false === $favorites) {
           $this->_reserved['body'] = '{"error": 1}';

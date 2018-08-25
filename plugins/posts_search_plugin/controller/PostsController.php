@@ -18,8 +18,8 @@ class PostsController extends Controller {
       }
 
       $pool = $user['favorites'];
-
-      $isFavorite = Plugins::callFunction('database_plugin', 'postIsInPool', $pool, $favorite);
+      $model = $this->getModel();
+      $isFavorite = $model->postIsInPool($pool, $favorite);
 
       if($isFavorite) {
         Plugins::callFunction('database_plugin', 'removePostFromPool', $pool, $favorite);
@@ -62,7 +62,7 @@ class PostsController extends Controller {
       $this->data['list'][$i]['width'] = $post['width'];
       $this->data['list'][$i]['height'] = $post['height'];
       $this->data['list'][$i]['uploader'] = 'Smiley32'; // TODO: ...
-      if(false != $user && Plugins::callFunction('database_plugin', 'postIsInPool', $user['favorites'], $post['id'])) {
+      if(false != $user && $this->getModel()->postIsInPool($user['favorites'], $post['id'])) {
         $this->data['list'][$i]['favorite'] = 'loved';
       } else {
         $this->data['list'][$i]['favorite'] = '';

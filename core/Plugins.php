@@ -34,6 +34,13 @@ class Plugins {
     $className = 'Export_' . $pluginName;
     return $className::$function($params); // Check if the function exist
   }
+
+  public static function getModel($pluginName, $action) {
+    // TODO: check if the plugin exist / the file Export exist
+    require_once('plugins/' . $pluginName . '/model/' . ucfirst($action) . 'Model.php');
+    $className = ucfirst($action) . 'Model';
+    return new $className(); // Todo: don't recreate each time
+  }
 }
 
 ?>

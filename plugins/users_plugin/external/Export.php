@@ -13,7 +13,8 @@ class Export_users_plugin {
     }
 
     // Get user
-    $ret = Plugins::callFunction('database_plugin', 'getUser', $pseudo, $password);
+    $model = Plugins::getModel('users_plugin', 'users');
+    $ret = $model->getUser($pseudo, $password);
     if(!$ret) {
       return 2;
     }
