@@ -35,11 +35,19 @@ class Plugin {
 
   public function call($controller, $action, $subAction = null) {
     require_once('core/Controller.php');
+    require_once('core/Database.php');
 
     $class = ucfirst($controller) . 'Controller';
+    $model = ucfirst($controller) . 'Model';
+
     require_once('plugins/' . $this->_name . '/controller/' . $class . '.php');
 
-    $this->_class = new $class($action, $subAction);
+    $fileModel = 'plugins/' . $this->_name . '/model/' . $model . '.php';
+    if(is_file($fileModel)) {
+      require_once($fileModel);
+    }
+
+    $this->_class = new $class($controller, $action, $subAction);
     $this->_class->call();
   }
 

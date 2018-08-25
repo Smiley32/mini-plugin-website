@@ -1,6 +1,7 @@
 <?php
 
 class Controller {
+  private $_controller = null;
   protected $_action = null;
   protected $_subAction = null;
   private $_isAjax = false;
@@ -8,12 +9,14 @@ class Controller {
   private $_scripts = array();
   private $_styles = array();
   private $_title = 'Default title';
+  private $_model = null;
 
   protected $_reserved = array();
 
   public $data = array();
 
-  public function __construct($action, $subAction = null) {
+  public function __construct($controller, $action, $subAction = null) {
+    $this->_controller = $controller;
     $this->_action = $action;
     $this->_subAction = $subAction;
     $this->data['error'] = false;
@@ -40,6 +43,14 @@ class Controller {
     } else {
       $this->$fct();
     }
+  }
+
+  protected function getModel() {
+    if(null == $this->_model) {
+      $class = ucfirst($this->_controller) . 'Model';
+      $this->_model = new $class();
+    }
+    return $this->_model;
   }
 
   public function useCorrespondingHtml($use = null) {

@@ -12,16 +12,9 @@ class PostsController extends Controller {
       $file = $this->checkGet('file');
 
       $tags = 'tagme';
-      /*
-      if(!isset($_GET['tags']) || '' == $_GET['tags']) {
-        $tags = 'tagme';
-      } else {
-        $tags = $_GET['tags'];
-      }
-      */
 
       if(!$this->data['error']) {
-        $ret = Plugins::callFunction('database_plugin', 'addPost', $file, $tags);
+        $ret = $this->getModel()->addPost($file, $tags);
         if(true !== $ret) {
           switch($ret) {
             case 1:
@@ -53,10 +46,12 @@ class PostsController extends Controller {
 
     $this->setTitle('{>post<} ' . $id);
 
+    $model = $this->getModel();
+
     if(!$this->data['error'] && isset($_POST['submit'], $_POST['tags']) && '' != $_POST['tags']) {
       $tags = $_POST['tags'];
 
-      $ret = Plugins::callFunction('database_plugin', 'updatePostTags', $id, $tags);
+      $ret = $model->updatePostTags($id, $tags);
 
       if(true !== $ret) {
         switch($ret) {
@@ -77,7 +72,7 @@ class PostsController extends Controller {
       }
     }
 
-    $post = Plugins::callFunction('database_plugin', 'getPost', $id);
+    $post = $model->getPost($id);
 
     $this->data['isImage'] = false;
 
@@ -129,11 +124,10 @@ class PostsController extends Controller {
         break;
     }
 
-
     $this->data['isConnected'] = Plugins::callFunction('users_plugin', 'isConnected');
 
     // Smimilar images
-    $similars = Plugins::callFunction('database_plugin', 'getSimilarPosts', $id);
+    $similars = $model->getSimilarPosts($id);
 
     if(!$similars) {
       $this->addError('{>error_similars<}');
@@ -142,7 +136,7 @@ class PostsController extends Controller {
     }
 
     // Similar colors
-    $colors = Plugins::callFunction('database_plugin', 'getSameMainColorsPosts', $id);
+    $colors = $model->getSameMainColorsPosts($id);
 
     if(!$colors) {
       $this->data['colors'] = array();
@@ -151,7 +145,7 @@ class PostsController extends Controller {
     }
 
     // Similar tags
-    $similarTags = Plugins::callFunction('database_plugin', 'getSimilarTagsPosts', $id);
+    $similarTags = $model->getSimilarTagsPosts($id);
 
     if(!$similarTags) {
       $this->data['similarTagsPosts'] = array();
