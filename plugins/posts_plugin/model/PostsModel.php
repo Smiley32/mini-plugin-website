@@ -2,6 +2,67 @@
 
 class PostsModel extends Database {
 
+  /**
+   * Add a comment on a post
+   * An user must be connected to post a comment.
+   *
+   * @param int $postId : Post to comment
+   * @param string $comment : content of the comment
+   * @return
+   *      true  -> no error
+   *      1     -> no user connected
+   *      2     -> database error
+   */
+  public function addComment($postId, $comment) {
+    $db = $this->getInstance();
+
+    $comment = htmlspecialchars($comment);
+    $postId = (int)$postId;
+
+    $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
+    if(!$user) {
+      return 1;
+    }
+
+    $req = $db->prepare('INSERT INTO comments (post_id, user_id, content) VALUES (:post_id, :user_id, :content)');
+    $ret = $req->execute(array(
+      'post_id' => $postId,
+      'user_id' => $user['id'],
+      'content' => $comment
+    ));
+
+    if(!$ret) {
+      return 2;
+    }
+
+    return true;
+  }
+
+  /**
+   * Get the comments for a given post
+   *
+   * @param int $postId   : Post id
+   * @param bool $asc     : Ascending sorting (most recent first)
+   * @return mixed
+   *      false -> error
+   *      fetched comments else
+   */
+  public function getComments($postId, $asc = false) {
+    $postId = (int)$postId;
+
+    $db = $this->getInstance();
+
+    $sort = 'ASC';
+    if(!$asc) {
+      $sort = 'DESC';
+    }
+
+    $req = $db->prepare('SELECT comments.*, users.pseudo AS user FROM comments, users WHERE comments.user_id=users.id AND comments.post_id=:post_id ORDER BY date_added ' . $sort);
+    $ret = $req->execute(array('post_id' => $postId));
+
+    return !$ret ? false : $req->fetchAll();
+  }
+
   public function getPost($id) {
     $db = $this->getInstance();
 

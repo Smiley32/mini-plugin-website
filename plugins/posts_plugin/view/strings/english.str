@@ -32,3 +32,5 @@ unknown_rating: Unknown
 size: Size:
 dimensions: Dimensions:
 extension: Extension:
+comment_add: Add a comment
+comment_add_button: Comment

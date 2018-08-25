@@ -48,6 +48,13 @@ class PostsController extends Controller {
 
     $model = $this->getModel();
 
+    if(isset($_POST['submitComment']) && isset($_POST['comment'])) {
+      $comment = trim($_POST['comment']);
+      if($comment != '') {
+        $ret = $model->addComment($id, $comment);
+      }
+    }
+
     if(!$this->data['error'] && isset($_POST['submit'], $_POST['tags']) && '' != $_POST['tags']) {
       $tags = $_POST['tags'];
 
@@ -125,6 +132,15 @@ class PostsController extends Controller {
     }
 
     $this->data['isConnected'] = Plugins::callFunction('users_plugin', 'isConnected');
+
+    // Comments
+    $comments = $model->getComments($id);
+    
+    if(!$comments) {
+      $this->data['comments'] = array();
+    } else {
+      $this->data['comments'] = $comments;
+    }
 
     // Smimilar images
     $similars = $model->getSimilarPosts($id);

@@ -55,7 +55,43 @@
   </div>
 
   <div id="commentsContent" class="tab-content">
-    Test comments
+    {?isConnected?}
+    <form method="POST">
+      <article class="media">
+          <div class="media-content">
+            <div class="field">
+              <p class="control">
+                <textarea required name="comment" class="textarea" placeholder="{>comment_add<}"></textarea>
+              </p>
+            </div>
+            <nav class="level">
+              <div class="level-left">
+                <!-- nothing -->
+              </div>
+              <div class="level-right">
+                <div class="level-item">
+                  <button name="submitComment" class="button is-info">{>comment_add_button<}</button>
+                </div>
+              </div>
+            </nav>
+          </div>
+      </article>
+    </form>
+    {??}
+
+    [~comments~]
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>{~user~}</strong> <small>{~date_added~}</small>
+              <br>
+              {~content~}
+            </p>
+          </div>
+        </div>
+      </article>
+    [~~]
   </div>
 
   <div id="moreContent" class="tab-content">

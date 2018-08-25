@@ -348,7 +348,7 @@ class Export_database_plugin {
     return $req->fetch();
   }
 
-  
+
 
   /// $params[0]: tags
   /// $params[1]: page
@@ -476,7 +476,7 @@ CREATE TABLE posts (
   rating      INT         NOT NULL,
   uploader_id INT         NOT NULL,
   perceptual_hash BIGINT  NOT NULL,
-  description TEXT DEFAULT '',
+  description TEXT        DEFAULT     '',
   PRIMARY KEY (id),
   FOREIGN KEY (type_ext_id) REFERENCES file_ext(id),
   FOREIGN KEY (uploader_id) REFERENCES users(id)
@@ -536,6 +536,17 @@ CREATE TABLE pool_post (
   PRIMARY KEY (post_id, pool_id),
   FOREIGN KEY (post_id)   REFERENCES posts(id),
   FOREIGN KEY (pool_id)   REFERENCES pools(id)
+);
+
+CREATE TABLE comments (
+  id          INT         AUTO_INCREMENT,
+  post_id     INT         NOT NULL,
+  date_added  DATETIME    DEFAULT    CURRENT_TIMESTAMP,
+  user_id     INT         NOT NULL,
+  content     TEXT        NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (post_id)   REFERENCES posts(id),
+  FOREIGN KEY (user_id)   REFERENCES users(id)
 );
 
 SQL;
