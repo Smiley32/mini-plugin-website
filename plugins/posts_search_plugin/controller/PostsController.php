@@ -22,9 +22,9 @@ class PostsController extends Controller {
       $isFavorite = $model->postIsInPool($pool, $favorite);
 
       if($isFavorite) {
-        Plugins::callFunction('database_plugin', 'removePostFromPool', $pool, $favorite);
+        $model->removePostFromPool($pool, $favorite);
       } else {
-        Plugins::callFunction('database_plugin', 'addPostInPool', $pool, $favorite);
+        $model->addPostInPool($pool, $favorite);
       }
     }
 
@@ -49,7 +49,8 @@ class PostsController extends Controller {
       }
     }
 
-    $posts = Plugins::callFunction('database_plugin', 'getPosts', $tags, $page);
+    $model = $this->getModel();
+    $posts = $model->getPosts($tags, $page);
 
     $this->data['isConnected'] = Plugins::callFunction('users_plugin', 'isConnected');
     $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
