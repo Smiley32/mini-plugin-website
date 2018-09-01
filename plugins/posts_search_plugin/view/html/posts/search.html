@@ -30,12 +30,12 @@
             {?isConnected?}
               <div class="heart {~favorite~}" onclick="toggleFavorite(this, {~id~})"></div>
             {??}
-            <div class="dots-container" onclick="displayDotMenu('dot-menu-{~id~}', event)">
+            <div class="dots-container" onclick="displayDotMenu('{~id~}', event)">
               <div class="dots" ></div>
             </div>
             <div class="dropdown-content dots-dropdown" id="dot-menu-{~id~}">
               <a onclick="displayPools(event)" class="dropdown-item">
-                Add to pool...
+                {>add_to_pool<}
               </a>
             </div>
           </div>
@@ -59,14 +59,14 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Modal title</p>
+      <p class="modal-card-title">{>choose_pool<}</p>
       <button onclick="hidePools()" class="delete" aria-label="close"></button>
     </header>
-    <section class="modal-card-body">
+    <section class="modal-card-body" id="poolModalContent">
       <!-- Content ... -->
     </section>
     <footer class="modal-card-foot">
-      <button onclick="hidePools()" class="button">Cancel</button>
+      <button onclick="hidePools()" class="button">{>cancel<}</button>
     </footer>
   </div>
 </div>

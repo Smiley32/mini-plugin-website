@@ -77,9 +77,9 @@ function displayDotMenu(id, event) {
   event.stopPropagation();
   if(displayedDotMenu == null && id != null) {
     displayedDotMenu = id;
-    document.getElementById(id).style.display = 'block';
+    document.getElementById('dot-menu-' + id).style.display = 'block';
   } else if(displayedDotMenu != null) {
-    document.getElementById(displayedDotMenu).style.display = 'none';
+    document.getElementById('dot-menu-' + displayedDotMenu).style.display = 'none';
     displayedDotMenu = null;
   }
 }
@@ -89,6 +89,33 @@ function displayPools(event) {
   displayModal = true;
   event.stopPropagation();
   document.getElementById('poolModal').classList.add('is-active');
+  get('/pools/api?get=all', setPools);
+}
+
+function setPools(data) {
+  console.log(data);
+  var parsed = JSON.parse(data);
+  if(!parsed) {
+    hidePools();
+  } else {
+    var html = '';
+
+    var length = parsed.length;
+    for(var i = 0; i < length; i++) {
+      html += '<a class="dropdown-item" onclick="putInPool(' + parsed[i]['id'] + ')">';
+      html += parsed[i]['title'];
+      html += '</a>';
+    }
+
+    if(html != '') {
+      document.getElementById('poolModalContent').innerHTML = html;
+    }
+  }
+}
+
+function putInPool(pool) {
+  get('/pools/api?add=1&post=' + displayedDotMenu + '&pool=' + pool);
+  hidePools();
 }
 
 function hidePools() {

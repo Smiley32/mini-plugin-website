@@ -4,3 +4,6 @@ classical_search: Classical tag search
 previous: Previous
 next: Next
 toggle_tags: Toggle tags
+cancel: Cancel
+choose_pool: Choose a pool
+add_to_pool: Add to pool...
