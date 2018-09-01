@@ -208,7 +208,12 @@ class Tree {
         break;
       case 'pool':
         if(preg_match('/^[0-9]+$/', $value)) {
-          $ret = ' posts.id IN (SELECT post_id FROM pool_post WHERE pool_id' . $sqlSeparator . $value . ')';
+          $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
+          if(!$user) {
+            $user = array();
+            $user['id'] = -1;
+          }
+          $ret = ' posts.id IN (SELECT pool_post.post_id FROM pool_post, pools WHERE pool_post.pool_id' . $sqlSeparator . $value . ' AND pool_post.pool_id=pools.id AND (pools.creator=' . $user['id'] . ' OR pools.private=0))';
         }
         break;
       default:
