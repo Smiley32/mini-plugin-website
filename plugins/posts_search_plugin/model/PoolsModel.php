@@ -2,6 +2,24 @@
 
 class PoolsModel extends Database {
 
+  public function searchPools($query) {
+    $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
+
+    if(!$user) {
+      $user['id'] = -1;
+    }
+
+    $db = $this->getInstance();
+    $req = $db->prepare('SELECT pools.*, users.pseudo FROM pools, users WHERE (pools.creator=:userId OR pools.private=0) AND pools.creator=users.id ORDER BY pools.title ASC');
+    $ret = $req->execute(array('userId' => $user['id']));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return $req->fetchAll();
+  }
+
   public function getCurrentUserPools() {
     // Get current connected user
     $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
@@ -50,7 +68,7 @@ class PoolsModel extends Database {
     }
 
     // ...
-    
+
     return true;
   }
 }

@@ -63,9 +63,9 @@ class UsersController extends Controller {
     // Add user
     $model = $this->getModel();
     $ret = $model->addUser($pseudo, $password);
-    if(true !== $ret) {
+    if($ret < 0) {
       switch($ret) {
-        case 1:
+        case -1:
           $this->addError('{>error_existing_user<}');
           break;
         default:

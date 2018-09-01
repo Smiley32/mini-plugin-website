@@ -123,7 +123,7 @@ CREATE TABLE users (
   id        INT AUTO_INCREMENT,
   pseudo    VARCHAR(50)   NOT NULL,
   avatar    VARCHAR(32),
-  favorites INT           NOT NULL,
+  favorites INT,
   password  VARCHAR(255)  NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (favorites) REFERENCES pools(id)

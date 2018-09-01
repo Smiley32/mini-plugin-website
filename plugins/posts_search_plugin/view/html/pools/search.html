@@ -1,0 +1,18 @@
+<input type="text" class="input" placeholder="Pool title"/>
+<a class="button is-link">My pools</a>
+<a class="button is-info">+ New pool</a>
+
+<table class="table center">
+  <tbody>
+    [~pools~]
+      <tr>
+        <td>{~id~}</td>
+        <td>{~title~}</td>
+        <td><a href="#">{~pseudo~}</a></td>
+        <td>
+          <a class="button is-link" href="/posts/search?tags=pool%3A{~id~}">View</a>
+        </td>
+      </tr>
+    [~~]
+  </tbody>
+</table>

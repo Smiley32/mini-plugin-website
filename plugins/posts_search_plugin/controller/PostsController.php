@@ -17,7 +17,7 @@ class PostsController extends Controller {
         return;
       }
 
-      $pool = $user['favorites'];
+      $pool = (int)$user['favorites'];
       $model = $this->getModel();
       $isFavorite = $model->postIsInPool($pool, $favorite);
 

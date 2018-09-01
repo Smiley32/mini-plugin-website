@@ -308,12 +308,15 @@ class PostsModel extends Database {
   /// $params[0]: pool id
   /// $params[1]: post id
   public function addPostInPool($poolId, $postId) {
+    $poolId = (int)$poolId;
+    $postId = (int)$postId;
+
     if(!Plugins::callFunction('users_plugin', 'isConnected')) {
       return false;
     }
 
     // Get pool
-    $pool = $this->getPool(array($poolId));
+    $pool = $this->getPool($poolId);
     if(!$pool) {
       return false;
     }
@@ -334,7 +337,7 @@ class PostsModel extends Database {
     }
 
     // Get pool
-    $pool = $this->getPool(array($poolId));
+    $pool = $this->getPool($poolId);
     if(!$pool) {
       return false;
     }
@@ -355,7 +358,7 @@ class PostsModel extends Database {
     }
 
     // Get pool
-    $pool = $this->getPool(array($poolId));
+    $pool = $this->getPool($poolId);
     if(!$pool) {
       return false;
     }

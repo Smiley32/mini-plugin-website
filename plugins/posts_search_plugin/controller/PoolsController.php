@@ -21,7 +21,20 @@ class PoolsController extends Controller {
   }
 
   protected function action_search() {
+    $this->data['pools'] = array();
 
+    if(isset($_GET['s'])) {
+      $search = $_GET['s'];
+    } else {
+      $search = '';
+    }
+
+    $model = $this->getModel();
+    $pools = $model->searchPools($search);
+
+    if($pools) {
+      $this->data['pools'] = $pools;
+    }
   }
 }
 

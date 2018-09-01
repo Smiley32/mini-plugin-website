@@ -7,8 +7,8 @@ class UsersModel extends Database {
    * @param $pseudo
    * @param $password The password, not hashed
    * @return true if no error, the error number else
-   * 1 -> Existing user
-   * 2 -> Request error
+   * -1 -> Existing user
+   * -2 -> Request error
    */
   public function addUser($pseudo, $password) {
     $db = $this->getInstance();
@@ -18,22 +18,7 @@ class UsersModel extends Database {
     $req->execute(array('pseudo' => $pseudo));
 
     if($req->rowCount() != 0) {
-      return 1; // Existing user
-    }
-
-    $model = Plugins::getModel('posts_search_plugin', 'posts');
-
-    // Create a private pool for the favorites
-    $pool = $model->createPool(array(
-      'creatorId',
-      'title',
-      'description',
-      'rating',
-      'private'
-    ));
-
-    if(false === $pool) {
-      return 2;
+      return -1; // Existing user
     }
 
     // Password hash
@@ -42,14 +27,38 @@ class UsersModel extends Database {
     $ret = $req->execute(array(
       'pseudo' => $pseudo,
       'password' => $hash,
-      'favorites' => $pool
+      'favorites' => NULL
     ));
 
     if(!$ret) {
-      return 2;
+      return -2;
     }
 
-    return $db->lastInsertId();
+    $insertedUser = $db->lastInsertId();
+
+    $model = Plugins::getModel('posts_search_plugin', 'posts');
+
+    // Create a private pool for the favorites
+    $pool = $model->createPool(
+      $insertedUser,
+      'Favorites',
+      'My favorites',
+      0,
+      true
+    );
+
+    if(false === $pool) {
+      return -3;
+    }
+
+    $req = $db->prepare('UPDATE users SET favorites=:poolId WHERE id=:userId');
+    $ret = $req->execute(array('poolId' => $pool, 'userId' => $insertedUser));
+
+    if(!$ret) {
+      return -4;
+    }
+
+    return $insertedUser;
   }
 
   /**
