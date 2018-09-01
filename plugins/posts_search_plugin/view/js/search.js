@@ -70,7 +70,10 @@ var displayTagPanel = true;
 
 var displayedDotMenu = null;
 function displayDotMenu(id, event) {
-  console.log(event);
+  if(displayModal) {
+    return;
+  }
+
   event.stopPropagation();
   if(displayedDotMenu == null && id != null) {
     displayedDotMenu = id;
@@ -79,6 +82,18 @@ function displayDotMenu(id, event) {
     document.getElementById(displayedDotMenu).style.display = 'none';
     displayedDotMenu = null;
   }
+}
+
+var displayModal = false;
+function displayPools(event) {
+  displayModal = true;
+  event.stopPropagation();
+  document.getElementById('poolModal').classList.add('is-active');
+}
+
+function hidePools() {
+  displayModal = false;
+  document.getElementById('poolModal').classList.remove('is-active');
 }
 
 document.getElementById('main-body').addEventListener('click', displayDotMenu.bind(null, null), false);

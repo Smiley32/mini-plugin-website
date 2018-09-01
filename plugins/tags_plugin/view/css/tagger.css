@@ -38,7 +38,7 @@
   position: fixed;
   right: 3em;
   top: 0.5em;
-  z-index: 100;
+  z-index: 31;
 }
 
 .tagger input {

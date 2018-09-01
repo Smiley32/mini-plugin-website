@@ -34,7 +34,7 @@
               <div class="dots" ></div>
             </div>
             <div class="dropdown-content dots-dropdown" id="dot-menu-{~id~}">
-              <a href="#" class="dropdown-item">
+              <a onclick="displayPools(event)" class="dropdown-item">
                 Add to pool...
               </a>
             </div>
@@ -53,4 +53,20 @@
     <a class="pagination-previous" onclick="goPage({{previousPage}})">{>previous<}</a>
     <a class="pagination-next" onclick="goPage({{nextPage}})">{>next<}</a>
   </nav>
+</div>
+
+<div class="modal" id="poolModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Modal title</p>
+      <button onclick="hidePools()" class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- Content ... -->
+    </section>
+    <footer class="modal-card-foot">
+      <button onclick="hidePools()" class="button">Cancel</button>
+    </footer>
+  </div>
 </div>
