@@ -30,6 +30,14 @@
             {?isConnected?}
               <div class="heart {~favorite~}" onclick="toggleFavorite(this, {~id~})"></div>
             {??}
+            <div class="dots-container" onclick="displayDotMenu('dot-menu-{~id~}', event)">
+              <div class="dots" ></div>
+            </div>
+            <div class="dropdown-content dots-dropdown" id="dot-menu-{~id~}">
+              <a href="#" class="dropdown-item">
+                Add to pool...
+              </a>
+            </div>
           </div>
           <div class="card-content">
             #{~id~} - {~width~}x{~height~}<br/>

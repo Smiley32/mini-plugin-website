@@ -67,3 +67,18 @@ var displayTagPanel = true;
     // toggleTags();
   }
 }
+
+var displayedDotMenu = null;
+function displayDotMenu(id, event) {
+  console.log(event);
+  event.stopPropagation();
+  if(displayedDotMenu == null && id != null) {
+    displayedDotMenu = id;
+    document.getElementById(id).style.display = 'block';
+  } else if(displayedDotMenu != null) {
+    document.getElementById(displayedDotMenu).style.display = 'none';
+    displayedDotMenu = null;
+  }
+}
+
+document.getElementById('main-body').addEventListener('click', displayDotMenu.bind(null, null), false);
