@@ -1,90 +1,26 @@
 # Readme
 
-## View System
+This repository contains a mini-framework, and some plugins for it.
 
-The correct syntaxes:
-`{{aVariable}}`
-`{{0a_Variable}}`
-`{{_aVariAble_}}`
+## Documentation:
+https://github.com/Smiley32/mini-plugin-website/wiki
 
-Incorrect:
-`{{a Variable}}`
-`{{ aVariable}}`
-`{{aVariable} }`
+---
 
-In fact, there is always 2 symbols surrounding the variables. No spaces are allowed
+This framework is based on **plugins**: the goal is to only use plugins to create a website. Then, it's easy to reuse each plugins for different websites.
 
-1. Replace foreach
-2. Replace if
-3. Replace variables
-4. Translate
-5. Replace Links
-6. Include routes
+Each plugins has an **MVC architecture**, that makes even simpler the fact to reuse the plugin by modifying only the view.
 
-### Foreach
+For now, some files are not in plugins (layout files, global css or global scripts). It will probably soon be in a plugin that will be the entry point / layout of the website.
 
-```
-$data['dataIndexName'] = array();
-$data['dataIndexName'][]['aVariableInTheForeach'] = 'First element';
-$data['dataIndexName'][]['aVariableInTheForeach'] = 'Last element';
-```
+---
 
-```
-[~dataIndexName~]
-  <something>{~aVariableInTheForeach~}</something>
-[~~]
-```
+The *example* website is a content browser, but the framework can be used to create any website.
 
-Result:
-```
-<something>First element</something>
-<something>Last element</something>
-```
+## Installation:
 
-### If
-
-```
-{?dataBoolean?}
-  <something>{{variable}} or anything else</something>
-{??}
-```
-Result: `<something>{{variable}} or anything else</something>` will be displayed only if `$data['dataBoolean'] == true`
-
-### Variables
-
-```<something>{{variable}} or anything else</something>```
-
-Result:
-
-With `data['variable'] = 'My content';`, the result will be `<something>My content or anything else</something>`
-
-### Translation
-
-`<something>{>stringId<} or {>anything<}</something>`
-
-In this case, stringId and anything must be set in the str file (`plugins/plugin/view/strings/language.str`)
-
-For example, a correct `.str` file is
-
-```
-stringId: This
-anything: that
-something_else: Something not used yet
-```
-
-Result:
-`<something>This or that</something>`
-
-### Links
-
-*It's currently not implemented*
-
-It simply replace a route with the correct link. This is way simpler that way to change the server way of naming
-
-### Routes
-
-This system allow to 'include' the result of a route into an other html file.
-A route mustn't be included in itself.
-
-`{{errors/404}}` will call the corresponding controller and generate the corresponding html
-
+ - **Framework**: The framework is very easy to install: just download/clone the repository in a folder and you have it. The framework doesn't require anything (only tested on php7 and apache). You may use any database you want. If you don't use apache server, you may need to rewrite the .htaccess to have nice urls.
+ 
+ - **Framework + Website**: Installing the website is a bit harder since there isn't a stable version yet. You must download/clone the repository, change the `core/database.php` file to set your login and password for your database (mysql/mariadb). Then you can go in `plugins/database_plugin/export/Export.php` and get the SQL script to create the tables. Your database must be `utf8 unicode`. (If you have some reference errors, you can just remove the references). Next, you must add at least a default category, and a tag `tagme` in this category. Finally, you must create these folders: `data`, `data/thumbnails`, `data/posts`, `uploads` next to the index file. You must ensure that php can write in these folders.
+ 
+ Feel free to add an issue, if you find a bug, or if you think of a new functionality to implement.
