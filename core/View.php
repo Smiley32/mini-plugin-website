@@ -95,7 +95,7 @@ class View {
     return preg_replace_callback(
       '|{{([_a-zA-Z0-9]+)/([_a-zA-Z0-9]+)}}|'
       , function($m) {
-        $route = new Route($m[1], $m[2], null); // TODO: subAction
+        $route = new Route($m[1], $m[2], true); // Accept private
         $route->call();
         ob_start();
         $route->display();

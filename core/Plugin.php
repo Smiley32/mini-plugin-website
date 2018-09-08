@@ -33,7 +33,7 @@ class Plugin {
     return null === $this->_strings ? false : $this->_strings;
   }
 
-  public function call($controller, $action, $subAction = null) {
+  public function call($controller, $action) {
     require_once('core/Controller.php');
     require_once('core/Database.php');
 
@@ -47,11 +47,11 @@ class Plugin {
       require_once($fileModel);
     }
 
-    $this->_class = new $class($controller, $action, $subAction);
+    $this->_class = new $class($controller, $action);
     $this->_class->call();
   }
 
-  public function compileView($controller, $action, $subAction = null) {
+  public function compileView($controller, $action) {
     require_once('core/View.php');
     if($this->_class->isAjax()) {
       $reserved = $this->_class->getReserved();
@@ -77,7 +77,7 @@ class Plugin {
     }
   }
 
-  public function display($controller, $action, $subAction = null) {
+  public function display($controller, $action) {
     require_once('core/View.php');
     if($this->_class->isAjax()) {
       $v = new View($this->_class->reserved['body'], $this, false);

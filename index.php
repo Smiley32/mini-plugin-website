@@ -6,21 +6,31 @@ error_reporting(E_ALL);
 
 $controller = "error";
 $action = "404";
-$subAction = null;
 
 session_start();
 
-if(isset($_GET['controller'], $_GET['action'])) {
-  $controller = $_GET['controller'];
-  $action = $_GET['action'];
-}
-if(isset($_GET['subAction'])) {
-  $subAction = $_GET['subAction'];
+require_once('core/Settings.php');
+
+$url = $_SERVER['REQUEST_URI'];
+
+if(preg_match('|^\s*/?([a-zA-Z0-9]+)(?:/([a-zA-Z0-9]+))?(.*)\s*$|', $url, $matches) === 1) {
+  $controller = $matches[1];
+  if($matches[2] != '') {
+    $action = $matches[2];
+  } else {
+    $action = 'default';
+  }
+} else {
+  // 404
+  $route = Settings::get404Route();
+  if(preg_match('|\s*([a-zA-Z0-9]+)\s*/\s*([a-zA-Z0-9]+)\s*$|', $route, $matches) === 1) {
+    $controller = $matches[1];
+    $action = $matches[2];
+  }
 }
 
-require_once('core/Settings.php');
 require_once('core/Route.php');
-$route = new Route($controller, $action, $subAction);
+$route = new Route($controller, $action);
 $route->call();
 $route->compileView();
 Settings::getCurrentPage()->display();

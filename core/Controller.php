@@ -3,7 +3,6 @@
 class Controller {
   private $_controller = null;
   protected $_action = null;
-  protected $_subAction = null;
   private $_isAjax = false;
   private $_useCorrespondingHtml = true;
   private $_scripts = array();
@@ -15,10 +14,9 @@ class Controller {
 
   public $data = array();
 
-  public function __construct($controller, $action, $subAction = null) {
+  public function __construct($controller, $action) {
     $this->_controller = $controller;
     $this->_action = $action;
-    $this->_subAction = $subAction;
     $this->data['error'] = false;
     $this->data['errors'] = array();
   }
@@ -38,11 +36,7 @@ class Controller {
 
   public function call() {
     $fct = 'action_' . $this->_action;
-    if(null !== $this->_subAction) {
-      $fct($this->_subAction);
-    } else {
-      $this->$fct();
-    }
+    $this->$fct();
   }
 
   protected function getModel() {
