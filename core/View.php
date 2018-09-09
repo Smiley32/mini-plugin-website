@@ -83,7 +83,7 @@ class View {
     if(null !== $this->_plugin) {
       $this->_content = $this->_replaceStrings();
     }
-    // $this->_content = $this->_replaceLinks();
+    $this->_content = $this->_replaceLinks();
     $this->_content = $this->_replaceRoutes();
   }
 
@@ -107,7 +107,29 @@ class View {
   }
 
   private function _replaceLinks() {
-    // TODO..
+    $indexUrl = $_SERVER['PHP_SELF'];
+    $indexUrlLength = strlen($indexUrl);
+
+    $dirs = array();
+
+    $end = 0;
+    for($i = 0; $i < $indexUrlLength; $i++) {
+      if($indexUrl[$i] == '/') {
+        $end = $i;
+        // This file is in a directory
+      }
+    }
+    $baseUrl = substr($indexUrl, 0, $end);
+
+    return preg_replace_callback(
+      '/\[\[([_a-zA-Z0-9\/]+)\]\]/'
+      , function($m) use ($baseUrl) {
+        if($m[1][0] == '/') {
+          return $baseUrl . $m[1];
+        }
+        return $baseUrl . '/' . $m[1];
+      }, $this->_content
+    );
   }
 
   private function _replaceVariables($data) {

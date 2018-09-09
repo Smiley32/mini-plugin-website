@@ -89,7 +89,7 @@ class PostsController extends Controller {
     }
 
     $this->data['isImage'] = true;
-    $this->data['path'] = '/data/posts/' . $post['hash'];
+    $this->data['path'] = '[[data/posts]]/' . $post['hash'];
     $this->data['postId'] = $id;
 
     $this->data['description'] = $post['description'];
@@ -135,7 +135,7 @@ class PostsController extends Controller {
 
     // Comments
     $comments = $model->getComments($id);
-    
+
     if(!$comments) {
       $this->data['comments'] = array();
     } else {

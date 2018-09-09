@@ -4,29 +4,72 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$controller = "error";
-$action = "404";
+$controller = null;
+$action = null;
 
 session_start();
 
 require_once('core/Settings.php');
 
-$url = $_SERVER['REQUEST_URI'];
+$indexUrl = $_SERVER['PHP_SELF'];
+$indexUrlLength = strlen($indexUrl);
 
-if(preg_match('|^\s*/?([a-zA-Z0-9]+)(?:/([a-zA-Z0-9]+))?(.*)\s*$|', $url, $matches) === 1) {
-  $controller = $matches[1];
-  if($matches[2] != '') {
-    $action = $matches[2];
+$dirs = array();
+
+$begin = 0;
+$end = 0;
+for($i = 0; $i < $indexUrlLength; $i++) {
+  $end = $i;
+  if($indexUrl[$i] == '/') {
+    // This file is in a directory
+    $dir = substr($indexUrl, $begin, $end - $begin);
+    $dirs[] = $dir;
+
+    $begin = $i + 1;
+    $end = $begin;
+  }
+}
+
+$url = $_SERVER['REQUEST_URI'];
+$urlLength = strlen($url);
+
+$subdirs = array();
+
+$begin = 0;
+$end = 0;
+for($i = 0; $i < $urlLength; $i++) {
+  $end = $i;
+  if($url[$i] == '/') {
+    // This file is in a directory
+    $dir = substr($url, $begin, $end - $begin);
+    $subdirs[] = $dir;
+
+    $begin = $i + 1;
+    $end = $begin;
+  } elseif($url[$i] == '?') {
+    $dir = substr($url, $begin, $end - $begin);
+    $subdirs[] = $dir;
+
+    break;
+  } elseif($i == $urlLength - 1) {
+    $end++;
+    $dir = substr($url, $begin, $end - $begin);
+    $subdirs[] = $dir;
+  }
+}
+
+$subdirs = array_diff($subdirs, $dirs);
+
+$i = 0;
+foreach($subdirs as $d) {
+  if($i == 0) {
+    $controller = $d;
+  } elseif($i == 1) {
+    $action = $d;
   } else {
-    $action = 'default';
+    break;
   }
-} else {
-  // 404
-  $route = Settings::get404Route();
-  if(preg_match('|\s*([a-zA-Z0-9]+)\s*/\s*([a-zA-Z0-9]+)\s*$|', $route, $matches) === 1) {
-    $controller = $matches[1];
-    $action = $matches[2];
-  }
+  $i++;
 }
 
 require_once('core/Route.php');

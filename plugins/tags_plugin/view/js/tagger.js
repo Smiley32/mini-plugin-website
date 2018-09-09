@@ -14,13 +14,12 @@ function initSelected(category) {
   if(typeof postId === 'undefined') {
     return;
   }
-  // console.log('call <</tags/api?category=' + category + '&post=' + postId)
-  get('/tags/api?category=' + category + '&post=' + postId, displaySelectedTags.bind(null, category));
+  get(g_baseUrl + 'tags/api?category=' + category + '&post=' + postId, displaySelectedTags.bind(null, category));
 }
 
 function update(id) {
   var e = document.getElementById(id);
-  get('/tags/api?search=' + e.value + '&category=' + id, displayTags.bind(null, id));
+  get(g_baseUrl + 'tags/api?search=' + e.value + '&category=' + id, displayTags.bind(null, id));
 }
 
 function displaySelectedTags(id, data) {
@@ -94,7 +93,7 @@ function addTagInCategory(event, category) {
     return;
   }
 
-  get('/tags/api?category=' + category + '&tag=' + tag, update.bind(null, category));
+  get(g_baseUrl + 'tags/api?category=' + category + '&tag=' + tag, update.bind(null, category));
 }
 
 // Tags panel if used

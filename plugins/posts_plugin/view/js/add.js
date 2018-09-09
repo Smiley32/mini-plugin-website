@@ -16,7 +16,7 @@ function checkPost(e) {
 }
 
 function upload(elmt) {
-  var url = "/posts/upload";
+  var url = g_baseUrl + 'posts/upload';
   var file = elmt.files[0];
 
   var xhttp = new XMLHttpRequest();

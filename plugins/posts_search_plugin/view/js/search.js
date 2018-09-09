@@ -56,7 +56,7 @@ function toggleTags() {
 /*/
 
 function toggleFavorite(elmt, id) {
-  get('/posts/api?favorite=' + id, null); // TODO: handle callback
+  get(g_baseUrl + 'posts/api?favorite=' + id, null); // TODO: handle callback
   elmt.classList.toggle('loved');
 }
 
@@ -89,7 +89,7 @@ function displayPools(event) {
   displayModal = true;
   event.stopPropagation();
   document.getElementById('poolModal').classList.add('is-active');
-  get('/pools/api?get=all', setPools);
+  get(g_baseUrl + 'pools/api?get=all', setPools);
 }
 
 function setPools(data) {
@@ -114,7 +114,7 @@ function setPools(data) {
 }
 
 function putInPool(pool) {
-  get('/pools/api?add=1&post=' + displayedDotMenu + '&pool=' + pool);
+  get(g_baseUrl + 'pools/api?add=1&post=' + displayedDotMenu + '&pool=' + pool);
   hidePools();
 }
 

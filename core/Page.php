@@ -45,13 +45,13 @@ class Page {
     foreach($this->_views as $view) {
       $scripts = $view->getScripts();
       foreach($scripts as $script) {
-        $data['scripts'][$iScript]['path'] = '/plugins/' . $view->getPlugin()->getName() . '/view/js/' . $script;
+        $data['scripts'][$iScript]['path'] = '[[plugins]]/' . $view->getPlugin()->getName() . '/view/js/' . $script;
         $iScript++;
       }
 
       $styles = $view->getStyles();
       foreach($styles as $style) {
-        $data['styles'][$iStyle]['path'] = '/plugins/' . $view->getPlugin()->getName() . '/view/css/' . $style;
+        $data['styles'][$iStyle]['path'] = '[[plugins]]/' . $view->getPlugin()->getName() . '/view/css/' . $style;
         $iStyle++;
       }
     }

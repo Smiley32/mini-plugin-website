@@ -24,8 +24,8 @@
       <div class="column is-4-mobile is-3-tablet is-2-desktop">
         <div class="card">
           <div class="card-image">
-            <a href="/posts/show?id={~id~}">
-              <img class="image" src="/data/thumbnails/{~hash~}"/>
+            <a href="[[posts/show]]?id={~id~}">
+              <img class="image" src="[[data/thumbnails]]/{~hash~}"/>
             </a>
             {?isConnected?}
               <div class="heart {~favorite~}" onclick="toggleFavorite(this, {~id~})"></div>
