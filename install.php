@@ -1,9 +1,6 @@
 <?php
 /// WARNING!! This file must be deleted after an installation
 
-/// Database name
-$database = 'website';
-
 require_once('core/Database.php');
 
 class InstallDatabase extends Database {
