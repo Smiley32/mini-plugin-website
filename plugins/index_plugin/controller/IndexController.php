@@ -3,7 +3,8 @@
 class IndexController extends Controller {
 
   protected function action_counter() {
-    $postCount = Plugins::callFunction('database_plugin', 'getPostsCount');
+    $model = $this->getModel();
+    $postCount = $model->getPostsCount();
 
     if(false === $postCount) {
       $postCount = 0;
