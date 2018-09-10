@@ -1,31 +1,11 @@
-nav.navbar {
-  position: fixed;
-  width: 100%;
+.hero-body{
+    padding: 2em;
 }
 
-.body {
-  padding-top: 3.5em;
+.banner {
+  margin-top: 3em;
 }
 
-.columns .card {
-  margin: auto;
-}
-
-.list {
-  margin: 15px 0;
-}
-
-.center {
-  margin: auto;
-  text-align: center;
-}
-
-.columns .column {
-  display: flex;
-  align-items: center;
-  padding: 0.25em!important;
-}
-
-.card-content {
-  padding: .5em;
+.title_hover:hover {
+  background-color: inherit !important;
 }
