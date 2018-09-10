@@ -23,6 +23,6 @@ The *example* website is a content browser, but the framework can be used to cre
  
  - **Framework + Website**: To install the website, you must have a mysql/mariaDB database. First, you'll need to create a new database (you choose the name you prefer), in utf8_unicode_ci. Then you must edit the file `core/Database.php` and change the database connection line with your informations. Finally, you just have to exec the file `install.php` (`localhost/your-website/install.php` or something similar).
  
-Warning: **in every case, you must delete the `install.php` file**. *You may also want to delete the line `RewriteCond %{REQUEST_URI} !install\.php$` from `.htaccess`.
+Warning: **in every case, you must delete the `install.php` file**. *You may also want to delete the line `RewriteCond %{REQUEST_URI} !install\.php$` from `.htaccess`*.
  
  Feel free to add an issue, if you find a bug, or if you think of a new functionality to implement.
