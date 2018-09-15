@@ -16,10 +16,30 @@ class Page {
     // Get the content of the first view (it will include the content of the others)
     // Get all script/css and include them in the page
     // Display the final page
-    if(empty($this->_views)) {
-      echo 'rien';
-      return true;
+
+    $views = $this->_views;
+    $this->_views = array();
+
+    $rt = Settings::getSetting('layout-route');
+    if(!$rt) {
+      $rt = 'layout/default';
     }
+    $controller = null;
+    $action = null;
+
+    $length = strlen($rt);
+    for($i = 0; $i < $length; $i++) {
+      if($rt[$i] == '/') {
+        $controller = substr($rt, 0, $i);
+        $action = substr($rt, $i + 1);
+      }
+    }
+
+    $layoutRoute = new Route($controller, $action, true);
+    $layoutRoute->call();
+    $layoutRoute->compileView();
+
+    $this->_views = array_merge($this->_views, $views);
 
     // Ajax check
     foreach($this->_views as $view) {
@@ -30,14 +50,10 @@ class Page {
     }
 
     // Get the content of the views
-    $data['body'] = $this->_views[0]->getContent();
-    $data['title'] = $this->_views[0]->getTitle();
+    $data['body'] = $views[0]->getContent();
+    $data['title'] = $views[0]->getTitle();
     $data['scripts'] = array();
     $data['styles'] = array();
-
-    // Load global layout
-    $v = new View('layout.html', null);
-    $v->_replaceRoutes();
 
     $iScript = 0;
     $iStyle = 0;
@@ -56,8 +72,9 @@ class Page {
       }
     }
 
-    $v->compile($data);
-    echo $v->getContent();
+    // $layoutRoute->compileView();
+    $layoutRoute->display($data);
+
     return true;
   }
 }

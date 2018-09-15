@@ -78,7 +78,7 @@ class Route {
     $this->_plugin->compileView($this->_controller, $this->_action);
   }
 
-  public function display() {
+  public function display($customData = null) {
     if($this->_controller === null || $this->_action === null || $this->_plugin === null) {
       // 404
       $route = Settings::get404Route();
@@ -88,7 +88,7 @@ class Route {
         $this->_findRoute();
         $this->call();
         if($this->_plugin !== null) {
-          $this->_plugin->display($this->_controller, $this->_action);
+          $this->_plugin->display($this->_controller, $this->_action, $customData);
         } else {
           echo 'error 404 - page not found';
         }
@@ -96,7 +96,7 @@ class Route {
         echo 'error 404 - page not found';
       }
     }
-    $this->_plugin->display($this->_controller, $this->_action);
+    $this->_plugin->display($this->_controller, $this->_action, $customData);
   }
 }
 

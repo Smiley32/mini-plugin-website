@@ -136,7 +136,11 @@ class View {
     return preg_replace_callback(
       '/{{([_a-zA-Z0-9]+)}}/'
       , function($m) use ($data) {
-        return (string) $data[$m[1]];
+        if(isset($data[$m[1]])) {
+          return (string) $data[$m[1]];
+        } else {
+          return '';
+        }
       }, $this->_content
     );
   }
@@ -157,13 +161,15 @@ class View {
       '/\[~(.+?)~\](.*?)\[~~\]/ms'
       , function($m) use ($data) {
         $ret = '';
-        foreach($data[$m[1]] as $d) {
-          $ret .= preg_replace_callback(
-            '/{~([_a-zA-Z0-9]+)~}/'
-            , function($m) use ($d) {
-              return (string) $d[$m[1]];
-            }, $m[2]
-          );
+        if(isset($data[$m[1]])) {
+          foreach($data[$m[1]] as $d) {
+            $ret .= preg_replace_callback(
+              '/{~([_a-zA-Z0-9]+)~}/'
+              , function($m) use ($d) {
+                return (string) $d[$m[1]];
+              }, $m[2]
+            );
+          }
         }
         return $ret;
       }, $this->_content

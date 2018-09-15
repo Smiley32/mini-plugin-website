@@ -37,6 +37,7 @@ class Settings {
     if(null === self::$_settings || !isset(self::$_settings[$setting])) {
       return false;
     }
+    
     return self::$_settings[$setting];
   }
 

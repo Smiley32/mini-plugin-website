@@ -10,6 +10,7 @@ $action = null;
 session_start();
 
 require_once('core/Settings.php');
+require_once('core/Controller.php');
 
 $indexUrl = $_SERVER['PHP_SELF'];
 $indexUrlLength = strlen($indexUrl);

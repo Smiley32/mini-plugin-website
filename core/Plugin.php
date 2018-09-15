@@ -34,7 +34,6 @@ class Plugin {
   }
 
   public function call($controller, $action) {
-    require_once('core/Controller.php');
     require_once('core/Database.php');
 
     $class = ucfirst($controller) . 'Controller';
@@ -77,7 +76,7 @@ class Plugin {
     }
   }
 
-  public function display($controller, $action) {
+  public function display($controller, $action, $customData = null) {
     require_once('core/View.php');
     if($this->_class->isAjax()) {
       $v = new View($this->_class->reserved['body'], $this, false);
@@ -95,7 +94,12 @@ class Plugin {
         }
       }
       Settings::getCurrentPage()->addView($v);
-      $v->compile(array_merge($reserved, $this->_class->data));
+      if(null != $customData) {
+        $v->compile(array_merge($reserved, $this->_class->data, $customData));
+      } else {
+        $v->compile(array_merge($reserved, $this->_class->data));
+      }
+      
       $v->setAjax($this->_class->isAjax());
       $v->setScripts($this->_class->getScripts());
       $v->setStyles($this->_class->getStyles());
