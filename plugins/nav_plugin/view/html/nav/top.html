@@ -1,79 +1,46 @@
-<section class="hero is-primary">
-  <!-- Hero head: will stick at the top -->
-  <div class="hero-body">
-    <nav class="navbar">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item title_hover">
-            <img src="plugins/nav_plugin/view/images/logo_fma.png" alt="Logo">
-            <h1 class="title has-text-white">{>title<}</h1>
+<nav class="navbar is-transparent">
+  <div class="navbar-brand">
+    <a class="navbar-item" >
+      <!--
+        <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+      -->
+      <h1 class="title">{>title<}</h1>
+    </a>
+    <div class="navbar-burger burger" data-target="navbar">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <div id="navbar" class="navbar-menu">
+    <div class="navbar-start">
+      {?isConnected?}
+        <a class="navbar-item" href="[[posts/add]]">
+          {>upload<}
+        </a>
+      {??}
+      <a class="navbar-item" href="[[posts/search]]">
+        {>posts<}
+      </a>
+      <a class="navbar-item" href="[[pools/search]]">
+        {>pools<}
+      </a>
+      {?isConnected?}
+        <a class="navbar-item" href="[[users/logout]]">
+          {>logout<}
+        </a>
+      {??}
+      {?!isConnected?}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            {>login<}
           </a>
-          <span class="navbar-burger burger" data-target="navbar">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </div>
-
-        <div class="container has-text-centered banner">
-          <h1 class="title">
-            BANNIÈRE
-          </h1>
-        </div>
-
-        <div id="navbar" class="navbar-menu">
-          <div class="navbar-end">
-            <div class="btn-group">
-              {?!isConnected?}
-              <button class="button is-primary is-fullwidth">
-                <i class="material-icons">perm_identity</i>
-                {>signin<}
-              </button>
-              {??}
-              {?isConnected?}
-              <button class="button is-primary is-fullwidth">
-                <span class="icon">
-                  <i class="material-icons">cloud_upload</i>
-                </span>
-                <a href="[[posts/add]]">
-                  {>upload<}
-                </a>
-              </button>
-              {??}
-              <button class="button is-primary is-fullwidth">
-                <span class="icon">
-                  <i class="material-icons">visibility</i>
-                </span>
-                <a href="[[posts/search]]">
-                  {>posts<}
-                </a>
-              </button>
-              <button class="button is-primary is-fullwidth">
-                <span class="icon">
-                  <i class="material-icons">library_books</i>
-                </span>
-                <a href="[[pools/search]]">
-                  {>pools<}
-                </a>
-              </button>
-              <button class="button is-primary is-fullwidth">
-                <i class="material-icons">info</i>
-                {>about<}
-              </button>
-              {?isConnected?}
-              <button class="button is-primary is-fullwidth">
-                <span class="icon">
-                  <i class="material-icons">power_settings_new</i>
-                </span>
-                <a class="navbar-item" href="[[users/logout]]">
-                  {>logout<}
-                </a>
-              </button>
-              {??}
-            </div>
+          <div class="navbar-dropdown" style="min-width: 200px;">
+              {{users/login}}
           </div>
         </div>
-      </div>
-    </nav>
+      {??}
+    </div>
   </div>
-</section>
+</nav>

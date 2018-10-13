@@ -2,7 +2,5 @@ upload: Upload
 posts: Posts
 title: Website
 login: Login
-signin: Sign in
 logout: Disconnect
 pools: Pools
-about: About
