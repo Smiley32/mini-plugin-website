@@ -73,6 +73,11 @@ foreach($subdirs as $d) {
   $i++;
 }
 
+if($controller == null) {
+  $controller = Settings::getSetting('default-controller');
+  $action = Settings::getSetting('default-action');
+}
+
 require_once('core/Route.php');
 $route = new Route($controller, $action);
 $route->call();

@@ -25,7 +25,19 @@ class Settings {
   }
 
   public static function redirect($controller, $action) {
-    header("Location: /$controller/$action");
+    $indexUrl = $_SERVER['PHP_SELF'];
+    $indexUrlLength = strlen($indexUrl);
+
+    $end = 0;
+    for($i = 0; $i < $indexUrlLength; $i++) {
+      if($indexUrl[$i] == '/') {
+        $end = $i;
+        // This file is in a directory
+      }
+    }
+    $baseUrl = substr($indexUrl, 0, $end);
+
+    header("Location: $baseUrl/$controller/$action");
     exit();
   }
 
@@ -37,7 +49,7 @@ class Settings {
     if(null === self::$_settings || !isset(self::$_settings[$setting])) {
       return false;
     }
-    
+
     return self::$_settings[$setting];
   }
 
