@@ -2,6 +2,27 @@
 
 class PoolsModel extends Database {
 
+  public function addPool($name) {
+    $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
+
+    if(!$user) {
+      return false;
+    }
+
+    $db = $this->getInstance();
+    $req = $db->prepare('INSERT INTO pools(creator, title, description, rating, private) VALUES (:creator, :title, \'No description yet\', 0, 1)');
+    $ret = $req->execute(array(
+      'creator' => $user['id'],
+      'title' => $name
+    ));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return true;
+  }
+
   public function searchPools($query) {
     $user = Plugins::callFunction('users_plugin', 'getCurrentUser');
 

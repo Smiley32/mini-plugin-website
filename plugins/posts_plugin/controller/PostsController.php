@@ -131,6 +131,8 @@ class PostsController extends Controller {
         break;
     }
 
+    $this->data['tags'] = $model->getTags($id);
+
     $this->data['isConnected'] = Plugins::callFunction('users_plugin', 'isConnected');
 
     // Comments

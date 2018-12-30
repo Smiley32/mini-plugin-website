@@ -23,3 +23,36 @@
 #sampleImg {
   max-height: 60vh;
 }
+
+.floating-tag {
+  position: absolute;
+  width: 1vw;
+  height: 1vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+}
+
+.floating-tag .tag-label {
+  display: none;
+}
+
+.floating-tag:hover .tag-label {
+  display: inline-flex;
+}
+
+.floating-tagger {
+  display: block;
+  position: absolute;
+  /* background-color: red; */
+}
+
+.floating-tagger.hided {
+  display: none;
+}
+
+.floating-tagger .delete {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

@@ -4,18 +4,19 @@
   </div>
 [~~]
 
-<form method="GET" action="[[users/login]]">
+<form method="GET" action="[[users/login]]" style="padding: 10px;">
   <label>
     {>pseudo_label<}
     <input type="text" class="input" placeholder="{>pseudo_placeholder<}" name="pseudo" required />
   </label>
-  <div class="columns">
-    <label class="column">
-      {>password_label<}
-      <input type="password" class="input" placeholder="password" name="password" required />
-    </label>
-  </div>
+  <label>
+    {>password_label<}
+    <input type="password" class="input" placeholder="password" name="password" required />
+  </label>
+  <hr>
   <input type="text" hidden value="" id="redirect" name="redirect" />
-  <input type="reset" class="button is-warning" value="{>cancel<}" />
-  <input type="submit" class="button is-info" name="submit" value="{>signin<}" />
+  <div class="center">
+    <input type="reset" class="button is-warning" value="{>cancel<}" />
+    <input type="submit" class="button is-info" name="submit" value="{>signin<}" />
+  </div>
 </form>

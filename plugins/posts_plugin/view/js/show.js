@@ -6,6 +6,10 @@ var elmtMore = document.getElementById('moreContent');
 var elmtMoreTab = document.getElementById('more');
 var elmtEdit = document.getElementById('editContent');
 var elmtEditTab = document.getElementById('edit');
+var elmtImageClick = document.getElementById('imageClick');
+
+var globalXClick = -1;
+var globalYClick = -1;
 
 {
   elmtDescriptionTab.addEventListener('click', function(event) {
@@ -71,5 +75,131 @@ var elmtEditTab = document.getElementById('edit');
         elmtEdit.style.display = 'block';
       }
     });
+  }
+
+  if(null != elmtImageClick) {
+    elmtImageClick.addEventListener('click', onImageClick);
+
+    var img = document.getElementById('imageInsideClick');
+
+    elmtImageClick.style.maxWidth = img.offsetWidth + 'px';
+  }
+
+}
+
+function getPosition(element) {
+  var xPosition = 0;
+  var yPosition = 0;
+
+  while(element) {
+    if(element.tag == "BODY") {
+      var xScrollPos = element.scrollLeft || document.documentElement.scrollLeft;
+      var yScrollPos = element.scrollTop || document.documentElement.scrollTop;
+
+      xPosition += (element.offsetLeft - xScrollPos + element.clientLeft);
+      yPosition += (element.offsetTop - yScrollPos + element.clientTop);
+    } else {
+      xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+      yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+    }
+    element = element.offsetParent;
+  }
+
+  return { x: xPosition, y: yPosition };
+}
+
+var currentTag = null;
+
+function confirmFloatingTagger() {
+  var tagElement = document.getElementById('floating-input-tag');
+  if(tagElement != null && tagElement != undefined) {
+    var tag = tagElement.value;
+
+    if(tag != '') {
+      tagElement.value = "";
+
+      console.log("Click x: " + globalXClick + "% ; y: " + globalYClick + "%");
+
+      console.log(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick);
+      get(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick, null);
+
+      hideFloatingTagger();
+    }
+  }
+}
+
+function hideFloatingTagger() {
+  var e = document.querySelector('.floating-tagger');
+  if(e != null && e != undefined) {
+    e.classList.add('hided');
+  }
+}
+
+function showFloatingTagger(x, y) {
+  var width = window.innerWidth || d.documentElement.clientWidth || d.getElementsByTagName('body')[0].clientWidth;
+
+  var useRight = false;
+  if(x > width - 300) {
+    useRight = true;
+  }
+
+  var e = document.querySelector('.floating-tagger');
+  if(e != null && e != undefined) {
+    if(useRight) {
+      x = width - x;
+      e.style.left = "";
+      e.style.right = x + "px";
+    } else {
+      e.style.left = x + "px";
+      e.style.right = "";
+    }
+
+    e.style.top = y + "px";
+    e.classList.remove('hided');
+
+    document.getElementById('floating-input-tag').focus();
+  }
+}
+
+function onImageClick(event) {
+
+  var elementPosition = event.currentTarget.getBoundingClientRect();
+
+  var xClick = (event.clientX - elementPosition.left) / event.currentTarget.offsetWidth * 100;
+  var yClick = (event.clientY - elementPosition.top) / event.currentTarget.offsetHeight * 100;
+
+  globalXClick = xClick;
+  globalYClick = yClick;
+
+  showFloatingTagger(event.clientX, (event.clientY - elementPosition.top + 50));
+
+  /*/
+  if(currentTag != null) {
+    var elementPosition = event.currentTarget.getBoundingClientRect();
+    var xClick = (event.clientX - elementPosition.left) / event.currentTarget.offsetWidth * 100;
+    var yClick = (event.clientY - elementPosition.top) / event.currentTarget.offsetHeight * 100;
+
+    console.log("Click x: " + xClick + "% ; y: " + yClick + "%");
+
+    console.log(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + currentTag + '&x=' + xClick + '&y=' + yClick);
+    get(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + currentTag + '&x=' + xClick + '&y=' + yClick, null);
+    currentTag = null;
+  } else {
+    var elementPosition = event.currentTarget.getBoundingClientRect();
+    var xClick = (event.clientX - elementPosition.left) / event.currentTarget.offsetWidth * 100;
+    var yClick = (event.clientY - elementPosition.top) / event.currentTarget.offsetHeight * 100;
+
+    console.log("Click x: " + xClick + "% ; y: " + yClick + "%");
+  }
+  /*/
+}
+
+function addTagPos(event) {
+  var e = document.getElementById('tag_add');
+  if(e != null) {
+    if(e.value) {
+      currentTag = e.value;
+      console.log(currentTag);
+    }
   }
 }

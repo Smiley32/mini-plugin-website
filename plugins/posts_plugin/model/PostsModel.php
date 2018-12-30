@@ -365,6 +365,21 @@ SQL
     return true;
   }
 
+  public function getTags($postId) {
+    $postId = (int)$postId;
+
+    $db = $this->getInstance();
+
+    $req = $db->prepare('SELECT * FROM tags, post_tag WHERE tags.id=post_tag.tag_id AND post_tag.post_id=:post_id');
+    $ret = $req->execute(array('post_id' => $postId));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return $req->fetchAll();
+  }
+
   /// $params[0]: post id
   /// $params[1]: new tags
   /// 1: no tags

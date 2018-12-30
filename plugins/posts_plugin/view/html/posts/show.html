@@ -19,9 +19,31 @@
 
 <div id="pageContent">
   {?isImage?}
-  <div class="center">
-    <img src="{{path}}" />
-  </div>
+    <div id="imageClick" class="center" style="position: relative; border: blue 1px solid;">
+      <img id="imageInsideClick" src="{{path}}" />
+      [~tags~]
+      <div class="floating-tag" style="top:{~y~}%; left:{~x~}%;">
+        <div class="tag-label tag">
+          {~tag~}
+        </div>
+      </div>
+      [~~]
+    </div>
+    <div class="floating-tagger box hided">
+      <a class="delete" onclick="hideFloatingTagger()"></a>
+      <h2 class="subsubtitle center">New tag</h2>
+      <hr>
+      <div class="field has-addons">
+        <div class="control">
+          <input id="floating-input-tag" onkeydown="if(event.keyCode == 13) { document.getElementById('floating-input-button').click() }" class="input" type="text" placeholder="Text input">
+        </div>
+        <div class="control">
+          <button id="floating-input-button" class="button is-info" onclick="confirmFloatingTagger()">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
   {??}
 
   <div class="tabs is-centered">
@@ -155,7 +177,14 @@
 
   {?isConnected?}
     <div id="editContent" class="tab-content">
-      Edition
+      <div class="tag-add columns is-mobile">
+        <input id="tag_add" type="text" placeholder="{>tag<}" class="input" />
+        <button type="button" class="button is-warning" onclick="addTagPos(event);">{>add_tag<}</button>
+      </div>
+      {>click_picture<}
+      </br>
+      </br>
+      </br>
     </div>
   {??}
 </div>

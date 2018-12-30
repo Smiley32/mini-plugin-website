@@ -329,6 +329,56 @@ class PostsModel extends Database {
     return $ret;
   }
 
+  public function tagPost($postId, $tag, $x, $y) {
+    $postId = (int)$postId;
+    $x = (int)$x;
+    $y = (int)$y;
+    $tag = trim($tag);
+
+    if(!Plugins::callFunction('users_plugin', 'isConnected')) {
+      return false;
+    }
+
+    if($x < 0 || $x > 100 || $y < 0 || $y > 100) {
+      return false;
+    }
+
+    $db = $this->getInstance();
+
+    // get tag
+    $req = $db->prepare('SELECT * FROM tags WHERE tag=:tag');
+    $ret = $req->execute(array('tag' => $tag));
+
+    if(!$ret) {
+      return;
+    }
+
+    if($req->rowCount() < 1) {
+      // Insert tag
+      $req = $db->prepare('INSERT INTO tags (tag, category_id) VALUES (:tag, 1)');
+      $ret = $req->execute(array('tag' => $tag));
+
+      if(!$ret) {
+        return;
+      }
+
+      $tagId = $db->lastInsertId();
+    } else {
+      $fetched = $req->fetch();
+      $tagId = $fetched['id'];
+    }
+
+    $req = $db->prepare('INSERT INTO post_tag (post_id, tag_id, x, y) VALUES (:post_id, :tag_id, :x, :y)');
+    $ret = $req->execute(array(
+      'post_id' => $postId,
+      'tag_id' => $tagId,
+      'x' => $x,
+      'y' => $y
+    ));
+
+    return $ret;
+  }
+
   /// $params[0]: pool id
   /// $params[1]: post id
   public function removePostFromPool($poolId, $postId) {

@@ -17,10 +17,14 @@ class PoolsController extends Controller {
       }
     } elseif(isset($_GET['add'], $_GET['post'], $_GET['pool']) && $_GET['add'] == 1) {
       $model->addPostInPool($_GET['pool'], $_GET['post']);
+    } elseif(isset($_GET['new']) && $_GET['new'] != '') {
+      $model->addPool($_GET['new']);
     }
   }
 
   protected function action_search() {
+    $this->addScript('search.js');
+
     $this->data['pools'] = array();
 
     if(isset($_GET['s'])) {

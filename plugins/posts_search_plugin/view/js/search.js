@@ -1,3 +1,15 @@
+function addNewPool() {
+  var poolNameElmt = document.getElementById('poolNameInput');
+  var poolName = poolNameElmt.value;
+  if(poolName != '') {
+    get(g_baseUrl + 'pools/api?new=' + poolName, reloadCallback);
+  }
+}
+
+function reloadCallback(json) {
+  location.reload();
+}
+
 function getParam(param) {
   var params = window.location.search.substr(1);
 

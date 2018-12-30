@@ -34,3 +34,6 @@ dimensions: Dimensions:
 extension: Extension:
 comment_add: Add a comment
 comment_add_button: Comment
+add_tag: Add a tag
+tag: Tag
+click_picture: Click on the picture where you want to put the tag
