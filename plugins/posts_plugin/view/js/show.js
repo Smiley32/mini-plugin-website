@@ -82,9 +82,17 @@ var globalYClick = -1;
 
     var img = document.getElementById('imageInsideClick');
 
-    elmtImageClick.style.maxWidth = img.offsetWidth + 'px';
+    if(img.complete) {
+      setImageWidth();
+    } else {
+      img.addEventListener('load', setImageWidth);
+    }
   }
+}
 
+function setImageWidth() {
+  var img = document.getElementById('imageInsideClick');
+  elmtImageClick.style.maxWidth = img.offsetWidth + 'px';
 }
 
 function getPosition(element) {
@@ -106,6 +114,39 @@ function getPosition(element) {
   }
 
   return { x: xPosition, y: yPosition };
+}
+
+function hideAutoCompleteList() {
+  document.querySelector('.tagger-autocomp-menu').classList.add('hided');
+}
+
+function showAutoCompleteList() {
+  document.querySelector('.tagger-autocomp-menu').classList.remove('hided');
+}
+
+function updateTaggerAutocomp() {
+  var e = document.getElementById('floating-input-tag');
+  if(e.value != '') {
+    get(g_baseUrl + 'tags/api?search=' + e.value + '&category=Default', updateTaggerAutocompCallback);
+  }
+}
+
+function setTagInInput(tag) {
+  var e = document.getElementById('floating-input-tag');
+  e.value = tag;
+  hideAutoCompleteList();
+}
+
+function updateTaggerAutocompCallback(json) {
+  var parsed = JSON.parse(json);
+
+  var html = '';
+  for(var i = 0; i < parsed.length && i < 15; i++) {
+    html += '<li><a onclick="setTagInInput(\'' + parsed[i].tag + '\')">' + parsed[i].tag + '</a></li>'
+  }
+
+  document.getElementById('tagger-autocomp-list').innerHTML = html;
+  showAutoCompleteList();
 }
 
 var currentTag = null;

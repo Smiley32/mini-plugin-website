@@ -56,3 +56,13 @@
   right: 10px;
   top: 10px;
 }
+
+.tagger-autocomp-menu {
+  position: absolute;
+  background-color: inherit;
+  width: 85%;
+}
+
+.hided {
+  display: none;
+}

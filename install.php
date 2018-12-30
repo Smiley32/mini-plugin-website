@@ -77,6 +77,8 @@ CREATE TABLE tags (
 CREATE TABLE post_tag (
   post_id     INT         NOT NULL,
   tag_id      INT         NOT NULL,
+  x           INT         DEFAULT 0,
+  y           INT         DEFAULT 0,
   PRIMARY KEY (post_id, tag_id),
   FOREIGN KEY (post_id)   REFERENCES posts(id),
   FOREIGN KEY (tag_id)    REFERENCES tags(id)
