@@ -123,7 +123,7 @@ function toggleTags() {
   var isTagPanelOpen = false;
 
   if(window.innerWidth >= 1088) {
-    toggleTags();
+    // toggleTags();
   }
 
   var pageContent = document.getElementById('pageContent');

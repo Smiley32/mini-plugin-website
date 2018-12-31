@@ -44,10 +44,10 @@ function goPage(id) {
       url += 'submit=' + submit + '&';
     }
 
-    if(!displayTagPanel) {
-      url += 'displayTagPanel=0&';
-    } else {
+    if(displayTagPanel) {
       url += 'displayTagPanel=1&';
+    } else {
+      url += 'displayTagPanel=0&';
     }
   }
 
@@ -72,13 +72,7 @@ function toggleFavorite(elmt, id) {
   elmt.classList.toggle('loved');
 }
 
-var displayTagPanel = true;
-{
-  var param = getParam('displayTagPanel');
-  if(0 == param) {
-    // toggleTags();
-  }
-}
+var displayTagPanel = false;
 
 var displayedDotMenu = null;
 function displayDotMenu(id, event) {
