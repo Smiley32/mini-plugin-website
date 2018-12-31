@@ -172,7 +172,55 @@ class PostsController extends Controller {
     }
   }
 
+  private function _decode($chunk) {
+    $chunk = explode(';base64,', $chunk);
+
+    if(!is_array($chunk) || !isset($chunk[1])) {
+      return false;
+    }
+
+    $chunk = base64_decode($chunk[1]);
+    if(!$chunk) {
+      echo 'là';
+      return false;
+    }
+
+    return $chunk;
+  }
+
   protected function action_upload() {
+    $this->setAjax(true);
+
+    if(isset($_GET['u']) && $_GET['u'] == '1') {
+      $json = json_decode(stripslashes(file_get_contents('php://input')), true);
+
+      if($json['action'] == 'upload') {
+        if(isset($json['id']) && $json['id'] !== false) {
+          $id = $json['id'];
+        } else {
+          $id = uniqid();
+        }
+
+        $ext = $this->getExtension($json['file_type']);
+
+        $filePath = "uploads/$id.$ext";
+
+        $chunk = $this->_decode($json['file_data']);
+
+        if($chunk === false) {
+          // error
+          $this->_reserved['body'] = '{"error": 1}';
+        } else {
+          file_put_contents($filePath, $chunk, FILE_APPEND);
+
+          // success, return id
+          $this->_reserved['body'] = '{"error": 0, "id": "' . $id . '"}';
+        }
+      }
+    }
+  }
+
+  protected function action_uploadOLD() {
     $this->setAjax(true);
 
     /*/ // May be usefull one day

@@ -246,11 +246,14 @@ SQL
       return 1;
     }
 
-    $path = 'uploads/' . $fileName;
+    $files = glob('uploads/' . $fileName . '*');
 
-    if(!file_exists($path)) {
+    if(!isset($files[0])) {
       return 2;
     }
+    $fileName = $files[0];
+
+    $path = $fileName;
 
     $ext = pathinfo($fileName, PATHINFO_EXTENSION);
 

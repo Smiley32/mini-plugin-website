@@ -15,12 +15,14 @@ function checkPost(e) {
   }
 }
 
+var sliceSize = 1000 * 1024;
+var fileReader = null;
+var file = null;
+
 function upload(elmt) {
-  var url = g_baseUrl + 'posts/upload';
-  var file = elmt.files[0];
-
+/*/
+var url = g_baseUrl + 'posts/upload';
   var xhttp = new XMLHttpRequest();
-
 
   xhttp.open("POST", url, true);
   xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -49,22 +51,67 @@ function upload(elmt) {
       console.log('unknown length');
     }
   }, false);
+/*/
 
-  // Read the file and send to server
-  var fileObj = new FileReader();
-  fileObj.onload = function() {
-    document.getElementById('file_button').classList.remove('is-success');
-    document.getElementById('file_button').classList.add('is-warning');
-    document.getElementById('file_button').disabled = true;
-    document.getElementById('file_button').innerHTML = 'Upload...';
+  fileReader = new FileReader();
+  file = elmt.files[0];
 
-    var fullPath = elmt.value;
-    var fileName = fullPath.split(/(\\|\/)/g).pop();
+  document.getElementById('file_button').classList.remove('is-success');
+  document.getElementById('file_button').classList.add('is-warning');
+  document.getElementById('file_button').disabled = true;
+  document.getElementById('file_button').innerHTML = 'Upload...';
 
-    document.getElementById('sampleImg').src = fileObj.result;
-    // document.getElementById('test').value = fileName;
-    xhttp.send('file=' + fileObj.result);
+  uploadFile(0, false);
+}
+
+function uploadFile(start, fileId) {
+  if(file == null || fileReader == null) {
+    return;
   }
 
-  fileObj.readAsDataURL(file);
+  var nextSlice = start + sliceSize + 1;
+  var filePart = file.slice(start, nextSlice);
+
+  fileReader.onload = function(event) { // use onloadend ?
+    post(g_baseUrl + '/posts/upload?u=1', function(data) {
+      console.log(data);
+      var parsed = JSON.parse(data);
+
+      if(parsed.error == 1) {
+        document.getElementById('file_button').classList.remove('is-warning');
+        document.getElementById('file_button').classList.remove('is-success');
+        document.getElementById('file_button').classList.add('is-error');
+        document.getElementById('file_button').innerHTML = 'Error';
+        document.getElementById('submitUpload').disabled = true;
+
+        return;
+      }
+
+      var sizeDone = start + sliceSize;
+      var percentDone = Math.floor(sizeDone / file.size * 100);
+
+      if(nextSlice < file.size) {
+        document.getElementById('file_button').innerHTML = percentDone + '%...';
+
+        uploadFile(nextSlice, parsed['id']);
+      } else {
+        uploadedFile = parsed['id'];
+        document.getElementById('uploadedFile').value = parsed['id'];
+
+        document.getElementById('file_button').classList.remove('is-warning');
+        document.getElementById('file_button').classList.add('is-success');
+        document.getElementById('file_button').innerHTML = 'OK!';
+        document.getElementById('submitUpload').disabled = false;
+      }
+
+    }, {
+      action: 'upload',
+      file_data: event.target.result,
+      file: file.name,
+      file_type: file.type,
+      id: fileId
+    });
+  }
+
+  fileReader.readAsDataURL(filePart);
 }
