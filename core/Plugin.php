@@ -11,7 +11,11 @@ class Plugin {
 
   public function getStrings() {
     if(null === $this->_strings) {
-      $language = 'english'; // TODO: not here
+      $language = Settings::getLanguage();
+
+      if($language == null) {
+        $language = 'english';
+      }
 
       $filePath = 'plugins/' . $this->_name . '/view/strings/' . $language . '.str';
       if(file_exists($filePath)) {
@@ -99,7 +103,7 @@ class Plugin {
       } else {
         $v->compile(array_merge($reserved, $this->_class->data));
       }
-      
+
       $v->setAjax($this->_class->isAjax());
       $v->setScripts($this->_class->getScripts());
       $v->setStyles($this->_class->getStyles());

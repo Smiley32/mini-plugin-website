@@ -1,0 +1,39 @@
+file: Choisir un fichier
+cancel: Annuler
+post: Post
+upload_file: Ajouter un fichier
+error_database: Une erreur est survenue. Veuillez réessayer plus tard
+error_not_connected: Vous devez être connecté pour ajouter un fichier
+error_file_doesnt_exists: Le fichier que vous souhaitez ajouter n'est pas sur le serveur. L'upload du fichier a dû échouer
+error_file_exists: Le fichier que vous souhaitez ajouter est déjà présent sur le serveur
+error_file_extension: Votre fichier n'est pas dans un format supporté par le serveur
+error_no_tags: Vous devez choisir au moins un mot-clé
+error_not_connected_tags: Vous devez être connecté pour mettre à jour les mot-clés
+error_similars: Impossible de récupérer les images similaires
+update: Mise à jour
+toggle_tags: Toggle mot-clés
+infos: Informations
+comments: Commentaires
+more: Similaires
+post: Post
+add_title: Ajouter un post
+similar_images_title: Images similaires :
+similar_colors_title: Avec des couleurs similaires :
+similar_tags_title: Avec des mot-clés similaires :
+edit: Editer
+hash: Hash :
+date: Date :
+uploader: Uploadeur :
+rating: Rating :
+safe_rating: Sain
+questionable_rating: Discutable
+explicit_rating: Explicite
+unknown_rating: Inconnu
+size: Taille :
+dimensions: Dimensions :
+extension: Extension :
+comment_add: Ajouter un commentaire
+comment_add_button: Commenter
+add_tag: Ajouter un mot-clé
+tag: Mot-clé
+click_picture: Cliquer sur l'image à laquelle vous souahitez ajouter un mot-clé

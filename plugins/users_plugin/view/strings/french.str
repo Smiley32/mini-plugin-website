@@ -1,0 +1,12 @@
+signup: Inscription
+signin: Connexion
+cancel: Annuler
+pseudo_placeholder: Entrez un pseudo
+pseudo_label: Pseudo :
+password_label: Mot de passe :
+password_confirmation_label: Confirmez le mot de passe :
+error_existing_user: Ce pseudo est déjà utilisé
+error_database: Une erreur est survenue. Veuillez réessayer plus tard
+error_already_connected: Vous êtes déjà connecté
+error_wrong_password_pseudo: Mauvais mot de passe ou pseudo
+signup: Créer un nouveau compte
