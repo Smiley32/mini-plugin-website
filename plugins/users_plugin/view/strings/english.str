@@ -9,3 +9,4 @@ error_existing_user: This pseudo is already used
 error_database: An error has occured. Please try again later
 error_already_connected: You are already connected
 error_wrong_password_pseudo: Wrong pseudo or password
+signup: Create a new account
