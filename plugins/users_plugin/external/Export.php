@@ -37,7 +37,6 @@ class Export_users_plugin {
     return true;
   }
 
-  /// $params[0]: user id XX -> nothing, give an id is useless
   public static function isConnected($params) {
     return isset($_SESSION['id']);
   }

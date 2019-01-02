@@ -40,6 +40,15 @@ class TagsController extends Controller {
           $this->_reserved['body'] = '{"error": 1}';
         }
       }
+    } elseif(isset($_GET['remove'], $_GET['post']) && $_GET['remove'] != '' && $_GET['post'] != '') {
+      $ret = $model->removeTagFromPost($_GET['post'], $_GET['remove']);
+      if($ret) {
+        $this->_reserved['body'] = '{"error": 0}';
+      } else {
+        $this->_reserved['body'] = '{"error": 1}';
+      }
+    } else {
+      $this->_reserved['body'] = '{"error": 42}';
     }
   }
 }

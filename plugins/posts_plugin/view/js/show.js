@@ -177,6 +177,7 @@ function hideFloatingTagger() {
 }
 
 function showFloatingTagger(x, y) {
+  console.log("salut!");
   var width = window.innerWidth || d.documentElement.clientWidth || d.getElementsByTagName('body')[0].clientWidth;
 
   var useRight = false;
@@ -243,4 +244,14 @@ function addTagPos(event) {
       console.log(currentTag);
     }
   }
+}
+
+function removeTagFromPost(event, tag) {
+  console.log(event);
+  event.stopPropagation();
+  console.log(g_baseUrl + '/tags/api?post=' + postId + '&remove=' + tag);
+  get(g_baseUrl + '/tags/api?post=' + postId + '&remove=' + tag, function(data) {
+    console.log(data);
+  });
+  return true;
 }

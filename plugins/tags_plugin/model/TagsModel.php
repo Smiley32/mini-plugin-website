@@ -2,6 +2,39 @@
 
 class TagsModel extends Database {
 
+  public function removeTagFromPost($post, $tag) {
+    $tag = mb_strtolower($tag);
+    $post = (int)$post;
+
+    if(!Plugins::callFunction('users_plugin', 'isConnected')) {
+      return false;
+    }
+
+    $db = $this->getInstance();
+
+    $req = $db->prepare('SELECT * FROM tags WHERE tag=:tag');
+    $ret = $req->execute(array('tag' => $tag));
+
+    if($ret == false) {
+      return false;
+    }
+
+    $fetched = $req->fetch();
+    $id = $fetched['id'];
+
+    $req = $db->prepare('DELETE FROM post_tag WHERE post_id=:post AND tag_id=:tag');
+    $ret = $req->execute(array(
+      'post' => $post,
+      'tag' => $id
+    ));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return true;
+  }
+
   public function addTagInCategory($category, $tag) {
     $tag = mb_strtolower($tag);
 

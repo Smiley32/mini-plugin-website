@@ -24,21 +24,40 @@
   max-height: 60vh;
 }
 
-.floating-tag {
-  position: absolute;
-  width: 1vw;
-  height: 1vw;
-  background-color: rgba(0, 0, 0, 0.5);
-  top: 0;
-  left: 0;
+.floating-tag:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
 }
 
-.floating-tag .tag-label {
+.floating-tag {
+  position: absolute;
+  width: 3%;
+  background-color: rgba(212, 106, 106, 0.25);
+  border-radius: 50%;
+  border: 3px solid #AA3939;
+}
+
+@media(max-width: 500px) {
+  .floating-tag {
+    border-width: 1px;
+  }
+}
+
+.tag-label {
+  position: absolute;
+}
+
+.floating-tag + .tag-label {
   display: none;
 }
 
-.floating-tag:hover .tag-label {
-  display: inline-flex;
+.floating-tag:hover + .tag-label {
+  display: flex;
+}
+
+.tag-label:hover {
+  display: flex;
 }
 
 .floating-tagger {
