@@ -21,13 +21,9 @@
   {?isImage?}
     <div id="imageClick" class="center" style="position: relative;">
       <img id="imageInsideClick" src="{{path}}" />
-      [~tags~]
-      <span class="floating-tag" style="top:{~y~}%; left:{~x~}%;"></span>
-      <div class="tags has-addons tag-label" style="top:{~y~}%; left:{~x~}%;">
-        <span class="tag">{~tag~}</span>
-        <a class="tag is-delete" onclick="removeTagFromPost(event, '{~tag~}')"></a>
+      <div id="tag-container">
+        
       </div>
-      [~~]
     </div>
     <div class="floating-tagger box hided">
       <a class="delete" onclick="hideFloatingTagger()"></a>

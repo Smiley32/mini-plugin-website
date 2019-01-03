@@ -47,6 +47,14 @@ class TagsController extends Controller {
       } else {
         $this->_reserved['body'] = '{"error": 1}';
       }
+    } elseif(isset($_GET['post']) && $_GET['post'] != '') {
+      // Get all the tags associated with a post
+      $tags = $model->getPostTags($_GET['post']);
+      if($tags === false) {
+        $this->_reserved['body'] = '{"error": 1}';
+      } else {
+        $this->_reserved['body'] = json_encode($tags);
+      }
     } else {
       $this->_reserved['body'] = '{"error": 42}';
     }

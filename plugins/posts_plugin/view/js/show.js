@@ -91,8 +91,31 @@ var globalYClick = -1;
 }
 
 function setImageWidth() {
+  // Display tags
+  get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
+
   var img = document.getElementById('imageInsideClick');
   elmtImageClick.style.maxWidth = img.offsetWidth + 'px';
+}
+
+function displayTagsOnImage(json) {
+  var parsed = JSON.parse(json);
+
+  // console.log(parsed);
+
+  var html = '';
+
+  for(var i = 0; i < parsed.length; i++) {
+    html += '<div class="one-tag">';
+    html += '<span class="floating-tag" style="top:' + parsed[i].y + '%; left:' + parsed[i].x + '%;"></span>';
+    html += '<div class="tags has-addons tag-label" style="top:' + parsed[i].y + '%; left:' + parsed[i].x + '%;">';
+    html += '<span class="tag">' + parsed[i].tag + '</span>';
+    html += '<a class="tag is-delete" onclick="removeTagFromPost(event, \'' + parsed[i].tag + '\')"></a>';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  document.getElementById('tag-container').innerHTML = html;
 }
 
 function getPosition(element) {
@@ -159,10 +182,12 @@ function confirmFloatingTagger() {
     if(tag != '') {
       tagElement.value = "";
 
-      console.log("Click x: " + globalXClick + "% ; y: " + globalYClick + "%");
+      // console.log("Click x: " + globalXClick + "% ; y: " + globalYClick + "%");
 
-      console.log(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick);
-      get(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick, null);
+      // console.log(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick);
+      get(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick, function(json) {
+        get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
+      });
 
       hideFloatingTagger();
     }
@@ -177,7 +202,7 @@ function hideFloatingTagger() {
 }
 
 function showFloatingTagger(x, y) {
-  console.log("salut!");
+  // console.log("salut!");
   var width = window.innerWidth || d.documentElement.clientWidth || d.getElementsByTagName('body')[0].clientWidth;
 
   var useRight = false;
@@ -241,17 +266,17 @@ function addTagPos(event) {
   if(e != null) {
     if(e.value) {
       currentTag = e.value;
-      console.log(currentTag);
+      // console.log(currentTag);
     }
   }
 }
 
 function removeTagFromPost(event, tag) {
-  console.log(event);
+  // console.log(event);
   event.stopPropagation();
-  console.log(g_baseUrl + '/tags/api?post=' + postId + '&remove=' + tag);
   get(g_baseUrl + '/tags/api?post=' + postId + '&remove=' + tag, function(data) {
-    console.log(data);
+    // console.log(data);
+    get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
   });
   return true;
 }

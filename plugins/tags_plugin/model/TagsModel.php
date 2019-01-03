@@ -2,6 +2,21 @@
 
 class TagsModel extends Database {
 
+  public function getPostTags($post) {
+    $post = (int)$post;
+
+    $db = $this->getInstance();
+
+    $req = $db->prepare('SELECT tags.tag, post_tag.x, post_tag.y FROM post_tag, tags WHERE post_tag.tag_id=tags.id AND post_id=:post');
+    $ret = $req->execute(array('post' => $post));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return $req->fetchAll();
+  }
+
   public function removeTagFromPost($post, $tag) {
     $tag = mb_strtolower($tag);
     $post = (int)$post;
