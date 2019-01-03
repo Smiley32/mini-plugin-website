@@ -428,6 +428,48 @@ class PostsModel extends Database {
 
     return true;
   }
+
+
+    /**
+     * Create a link between $src and $dest (post id).
+     * Also create a link between $dest and $src if $symmetric
+     */
+    public function addLink($src, $dest, $symmetric = true) {
+      $src = (int)$src;
+      $dest = (int)$dest;
+
+      $db = $this->getInstance();
+
+      $req = $db->prepare('SELECT * FROM links WHERE src=:src AND dest=:dest');
+      $ret = $req->execute(array(
+        'src' => $src,
+        'dest' => $dest
+      ));
+
+      if($req->rowCount() != 0) {
+        return false;
+      }
+
+      $req = $db->prepare('INSERT INTO links(src, dest) VALUES (:src, :dest)');
+      $ret = $req->execute(array(
+        'src' => $src,
+        'dest' => $dest
+      ));
+
+      if(!$ret) {
+        return false;
+      }
+
+      if($symmetric) {
+        $req = $db->prepare('INSERT INTO links(src, dest) VALUES (:src, :dest)');
+        $ret = $req->execute(array(
+          'src' => $dest,
+          'dest' => $src
+        ));
+      }
+
+      return true;
+    }
 }
 
 ?>

@@ -2,6 +2,21 @@
 
 class PostsModel extends Database {
 
+  public function getLinks($src) {
+    $src = (int)$src;
+
+    $db = $this->getInstance();
+
+    $req = $db->prepare('SELECT posts.id, posts.hash, users.pseudo, posts.width, posts.height FROM links, posts, users WHERE posts.uploader_id=users.id AND links.dest=posts.id AND links.src=:src');
+    $ret = $req->execute(array('src' => $src));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return $req->fetchAll();
+  }
+
   /**
    * Add a comment on a post
    * An user must be connected to post a comment.

@@ -18,6 +18,25 @@
 </div>
 
 <div id="pageContent">
+  {?links?}
+    <div class="links">
+      <h2 class="subtitle link-title">{>links<}</h2>
+      [~links~]
+        <div class="card">
+          <div class="card-image">
+            <a href="[[posts/show]]?id={~id~}">
+              <img class="image" src="[[data/thumbnails]]/{~hash~}"/>
+            </a>
+          </div>
+          <div class="card-content">
+            #{~id~} - {~width~}x{~height~}<br/>
+            <a href="#">{~pseudo~}</a>
+          </div>
+        </div>
+      [~~]
+    </div>
+  {??}
+
   {?isImage?}
     <div id="imageClick" class="center" style="position: relative;">
       <img id="imageInsideClick" src="{{path}}" />
@@ -177,14 +196,17 @@
 
   {?isConnected?}
     <div id="editContent" class="tab-content">
-      <div class="tag-add columns is-mobile">
-        <input id="tag_add" type="text" placeholder="{>tag<}" class="input" />
-        <button type="button" class="button is-warning" onclick="addTagPos(event);">{>add_tag<}</button>
+      <h2 class="subtitle">{>add_link<}</h2>
+      <div class="field has-addons">
+        <div class="control">
+          <input id="add-link-input" class="input" type="text" placeholder="{>post_number<}" onkeydown="if(event.keyCode == 13) { document.getElementById('add-link-button').click() }">
+        </div>
+        <div class="control">
+          <a id="add-link-button" class="button is-info" onclick="createLink()">
+            {>add_link<}
+          </a>
+        </div>
       </div>
-      {>click_picture<}
-      </br>
-      </br>
-      </br>
     </div>
   {??}
 </div>

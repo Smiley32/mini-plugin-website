@@ -121,6 +121,14 @@ CREATE TABLE comments (
   FOREIGN KEY (post_id)   REFERENCES posts(id),
   FOREIGN KEY (user_id)   REFERENCES users(id)
 );
+
+CREATE TABLE links (
+  src         INT         NOT NULL,
+  dest        INT         NOT NULL,
+  FOREIGN KEY (src)       REFERENCES posts(id),
+  FOREIGN KEY (dest)      REFERENCES posts(id)
+);
+
 SQL;
 
 $req = $db->prepare($sql);

@@ -170,6 +170,15 @@ class PostsController extends Controller {
     } else {
       $this->data['similarTagsPosts'] = $similarTags;
     }
+
+    // Links
+    $links = $model->getLinks($id);
+    
+    if(!$links) {
+      $this->data['links'] = array();
+    } else {
+      $this->data['links'] = $links;
+    }
   }
 
   private function _decode($chunk) {

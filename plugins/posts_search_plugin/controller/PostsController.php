@@ -29,6 +29,15 @@ class PostsController extends Controller {
     } elseif(isset($_GET['tag'], $_GET['post'], $_GET['x'], $_GET['y']) && $_GET['tag'] != '') {
       $model = $this->getModel();
       $ret = $model->tagPost($_GET['post'], $_GET['tag'], $_GET['x'], $_GET['y']);
+    } elseif(isset($_GET['src'], $_GET['dest'], $_GET['link']) && $_GET['src'] != '' && $_GET['dest'] != '') {
+      // link
+      $model = $this->getModel();
+      $ret = $model->addLink($_GET['src'], $_GET['dest'], true);
+
+      if(!$ret) {
+        $this->_reserved['body'] = '{"error": 1}';
+        return;
+      }
     }
 
     $this->_reserved['body'] = '{"error": 0}';

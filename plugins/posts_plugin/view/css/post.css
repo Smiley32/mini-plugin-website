@@ -85,3 +85,21 @@
 .hided {
   display: none;
 }
+
+.card {
+  display: inline-block;
+}
+
+.links {
+  padding: .5vw;
+  margin: .5vw;
+  margin-bottom: 2vw;
+  padding-bottom: 2vw;
+  border-radius: 3px;
+  border: 1px solid #e5e5e5;
+  text-align: center;
+}
+
+.link-title {
+  text-align: center;
+}

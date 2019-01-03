@@ -233,7 +233,7 @@ function showFloatingTagger(x, y) {
 
 function onImageClick(event) {
 
-  var elementPosition = event.currentTarget.getBoundingClientRect();
+  var elementPosition = event.target.getBoundingClientRect();
 
   var xClick = (event.clientX - elementPosition.left) / event.currentTarget.offsetWidth * 100;
   var yClick = (event.clientY - elementPosition.top) / event.currentTarget.offsetHeight * 100;
@@ -241,7 +241,7 @@ function onImageClick(event) {
   globalXClick = xClick;
   globalYClick = yClick;
 
-  showFloatingTagger(event.clientX, (event.clientY - elementPosition.top + 50));
+  showFloatingTagger(event.clientX, event.clientY + window.scrollY);
 
   /*/
   if(currentTag != null) {
@@ -262,16 +262,6 @@ function onImageClick(event) {
     console.log("Click x: " + xClick + "% ; y: " + yClick + "%");
   }
   /*/
-}
-
-function addTagPos(event) {
-  var e = document.getElementById('tag_add');
-  if(e != null) {
-    if(e.value) {
-      currentTag = e.value;
-      // console.log(currentTag);
-    }
-  }
 }
 
 function removeTagFromPost(event, tag) {
@@ -346,4 +336,12 @@ function onInputKeyDown(event) {
       document.getElementById('tagger-autocomp-list').innerHTML = '';
     }
   }
+}
+
+function createLink() {
+  console.log('create link...');
+  var id = document.getElementById('add-link-input').value;
+  get(g_baseUrl + '/posts/api?link=1&src=' + postId + '&dest=' + id, function(json) {
+    location.reload();
+  });
 }
