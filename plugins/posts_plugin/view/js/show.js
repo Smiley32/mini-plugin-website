@@ -11,6 +11,8 @@ var elmtImageClick = document.getElementById('imageClick');
 var globalXClick = -1;
 var globalYClick = -1;
 
+var selectedSuggestion = null;
+
 {
   elmtDescriptionTab.addEventListener('click', function(event) {
     elmtDescriptionTab.classList.add('is-active');
@@ -165,10 +167,11 @@ function updateTaggerAutocompCallback(json) {
 
   var html = '';
   for(var i = 0; i < parsed.length && i < 15; i++) {
-    html += '<li><a onclick="setTagInInput(\'' + parsed[i].tag + '\')">' + parsed[i].tag + '</a></li>'
+    html += '<li><a class="suggestion" onclick="setTagInInput(\'' + parsed[i].tag + '\')">' + parsed[i].tag + '</a></li>'
   }
 
   document.getElementById('tagger-autocomp-list').innerHTML = html;
+  selectedSuggestion = null;
   showAutoCompleteList();
 }
 
@@ -279,4 +282,68 @@ function removeTagFromPost(event, tag) {
     get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
   });
   return true;
+}
+
+function selectNextSuggestion() {
+  var suggestions = document.querySelectorAll('.suggestion');
+
+  if(suggestions.length == 0) {
+    selectedSuggestion = null;
+  } else {
+    if(selectedSuggestion === null) {
+      selectedSuggestion = 0;
+    } else if(selectedSuggestion == suggestions.length - 1) {
+      suggestions[selectedSuggestion].style.backgroundColor = 'white';
+      selectedSuggestion = 0;
+    } else {
+      suggestions[selectedSuggestion].style.backgroundColor = 'white';
+      selectedSuggestion += 1;
+    }
+  }
+
+  if(selectedSuggestion !== null) {
+    suggestions[selectedSuggestion].style.backgroundColor = '#f5f5f5';
+  }
+}
+
+function selectPreviousSuggestion() {
+  var suggestions = document.querySelectorAll('.suggestion');
+
+  if(suggestions.length == 0) {
+    selectedSuggestion = null;
+  } else {
+    if(selectedSuggestion === null) {
+      selectedSuggestion = suggestions.length - 1;
+    } else if(selectedSuggestion == 0) {
+      suggestions[selectedSuggestion].style.backgroundColor = 'white';
+      selectedSuggestion = suggestions.length - 1;
+    } else {
+      suggestions[selectedSuggestion].style.backgroundColor = 'white';
+      selectedSuggestion -= 1;
+    }
+  }
+
+  if(selectedSuggestion !== null) {
+    suggestions[selectedSuggestion].style.backgroundColor = '#f5f5f5';
+  }
+}
+
+function onInputKeyDown(event) {
+  if(event.keyCode == 40) { // down
+    selectNextSuggestion();
+  } else if(event.keyCode == 38) {
+    selectPreviousSuggestion();
+  }
+
+  if(event.keyCode == 13) { // Return key pressed
+    if(selectedSuggestion === null) {
+      document.getElementById('floating-input-button').click()
+    } else {
+      var suggestions = document.querySelectorAll('.suggestion');
+      document.getElementById('floating-input-tag').value = suggestions[selectedSuggestion].innerHTML;
+      suggestions[selectedSuggestion].style.backgroundColor = 'white';
+      selectedSuggestion = null;
+      document.getElementById('tagger-autocomp-list').innerHTML = '';
+    }
+  }
 }
