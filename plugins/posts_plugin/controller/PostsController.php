@@ -39,9 +39,6 @@ class PostsController extends Controller {
   }
 
   protected function action_show() {
-    $this->addStyle('post.css');
-    $this->addScript('show.js');
-
     $id = $this->checkGet('id');
 
     $this->setTitle('{>post<} ' . $id);
@@ -82,14 +79,34 @@ class PostsController extends Controller {
     $post = $model->getPost($id);
 
     $this->data['isImage'] = false;
+    $this->data['isVideo'] = false;
+
+    switch($post['ext']) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        $this->data['isImage'] = true;
+        break;
+
+      case 'mp4':
+      case 'mkv':
+      case 'avi':
+      case 'mov':
+      case 'wmv':
+      case 'flv':
+        $this->data['isVideo'] = true;
+        $this->data['mime'] = $this->getMinme($post['ext']);
+        break;
+    }
 
     if(!$post) {
       $this->addError('{>error_database<}');
       return;
     }
 
-    $this->data['isImage'] = true;
     $this->data['path'] = '[[data/posts]]/' . $post['hash'];
+    $this->data['thumbnailPath'] = '[[data/thumbnails]]/' . $post['hash'];
     $this->data['postId'] = $id;
 
     $this->data['description'] = $post['description'];
@@ -144,22 +161,24 @@ class PostsController extends Controller {
       $this->data['comments'] = $comments;
     }
 
-    // Smimilar images
-    $similars = $model->getSimilarPosts($id);
+    if($this->data['isImage']) {
+      // Smimilar images
+      $similars = $model->getSimilarPosts($id);
 
-    if(!$similars) {
-      $this->addError('{>error_similars<}');
-    } else {
-      $this->data['similars'] = $similars;
-    }
+      if(!$similars) {
+        $this->addError('{>error_similars<}');
+      } else {
+        $this->data['similars'] = $similars;
+      }
 
-    // Similar colors
-    $colors = $model->getSameMainColorsPosts($id);
+      // Similar colors
+      $colors = $model->getSameMainColorsPosts($id);
 
-    if(!$colors) {
-      $this->data['colors'] = array();
-    } else {
-      $this->data['colors'] = $colors;
+      if(!$colors) {
+        $this->data['colors'] = array();
+      } else {
+        $this->data['colors'] = $colors;
+      }
     }
 
     // Similar tags
@@ -173,12 +192,20 @@ class PostsController extends Controller {
 
     // Links
     $links = $model->getLinks($id);
-    
+
     if(!$links) {
       $this->data['links'] = array();
     } else {
       $this->data['links'] = $links;
     }
+
+    if($this->data['isVideo']) {
+      $this->addStyle('video-js.min.css');
+      $this->addScript('video.min.js');
+    }
+
+    $this->addStyle('post.css');
+    $this->addScript('show.js');
   }
 
   private function _decode($chunk) {
@@ -252,6 +279,33 @@ class PostsController extends Controller {
     fclose($file);
 
     $this->_reserved['body'] = '{"error": 0, "file": "' . $id . '.' . $ext . '"}';
+  }
+
+  private function getMinme($ext) {
+    $mimes = array(
+      'pdf' => 'application/pdf',
+      'zip' => 'application/zip',
+      'rar' => 'application/x-rar',
+      'midi' => 'audio/midi',
+      'mp3' => 'audio/mp3',
+      'wav' => 'audio/wav',
+      'bmp' => 'image/bmp',
+      'gif' => 'image/gif',
+      'jpg' => 'image/jpeg',
+      'png' => 'image/png',
+      'txt' => 'text/plain',
+      'avi' => 'video/avi',
+      'mp4' => 'video/mp4',
+      'flv' => 'video/x-flv',
+      'webm' => 'video/webm',
+      'wmv' => 'video/x-ms-wmv',
+      'flac' => 'audio/x-flac',
+      'ogg' => 'audio/ogg',
+      '7z' => 'application/x-7z-compressed',
+      'ico' => 'image/x-ico'
+    );
+
+    return $mimes[mb_strtolower($ext)];
   }
 
   private function getExtension($mime) {

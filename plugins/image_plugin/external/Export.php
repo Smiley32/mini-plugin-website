@@ -58,6 +58,8 @@ class Export_image_plugin {
     // Resize the source image in the new
     imagecopyresized($newImage, $sourceImage, 0, 0, 0, 0, 8, 8, $mime[0], $mime[1]);
 
+    imagedestroy($sourceImage);
+
     return $newImage;
   }
 
@@ -221,6 +223,8 @@ class Export_image_plugin {
         $palette[$category]++;
       }
     }
+
+    imagedestroy($image);
 
     $colors = array();
 

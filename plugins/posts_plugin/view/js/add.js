@@ -68,6 +68,7 @@ function uploadFile(start, fileId) {
   if(file == null || fileReader == null) {
     return;
   }
+  console.log(file.type);
 
   var nextSlice = start + sliceSize + 1;
   var filePart = file.slice(start, nextSlice);

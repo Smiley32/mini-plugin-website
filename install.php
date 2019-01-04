@@ -155,6 +155,7 @@ if(!$ret) {
   exit(1);
 }
 
+// IMAGE
 $req = $db->prepare('INSERT INTO file_types (name) VALUES (:name)');
 $ret = $req->execute(array('name' => 'image'));
 
@@ -172,5 +173,25 @@ if(!$ret) {
   echo 'An error has occured 5';
   exit(1);
 }
+
+// VIDEO
+$req = $db->prepare('INSERT INTO file_types (name) VALUES (:name)');
+$ret = $req->execute(array('name' => 'video'));
+
+if(!$ret) {
+  echo 'An error has occured 6';
+  exit(1);
+}
+
+$id = $db->lastInsertId();
+
+$req = $db->prepare('INSERT INTO file_ext (ext, type_id) VALUES (\'mp4\', :id), (\'mkv\', :id), (\'avi\', :id), (\'mov\', :id), (\'wmv\', :id), (\'flv\', :id)');
+$ret = $req->execute(array('id' => $id));
+
+if(!$ret) {
+  echo 'An error has occured 7';
+  exit(1);
+}
+
 
 echo 'success!';

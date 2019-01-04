@@ -37,6 +37,18 @@
     </div>
   {??}
 
+  {?isVideo?}
+    <div class="center">
+      <video style="margin: auto; margin-bottom: 10px;" id="my-video" class="video-js" controls preload="auto" width="{{width}}" height="{{height}}" poster="{{thumbnailPath}}" data-setup="{}">
+        <source src="{{path}}" type='{{mime}}'>
+        <p class="vjs-no-js">
+          {>error_no_js<}
+        </p>
+      </video>
+      <a href="{{path}}" download="video{{postId}}.{{extension}}">{>video_problem<}</a>
+    </div>
+  {??}
+
   {?isImage?}
     <div id="imageClick" class="center" style="position: relative;">
       <img id="imageInsideClick" src="{{path}}" />
@@ -136,44 +148,46 @@
   </div>
 
   <div id="moreContent" class="tab-content">
-    <h3 class="title is-5">{>similar_images_title<}</h3>
-    <div class="columns is-multiline is-mobile">
-      [~similars~]
-        <div class="column is-6-mobile is-4-tablet is-4-desktop">
-          <div class="card">
-            <div class="card-image">
-              <a href="[[posts/show]]?id={~id~}">
-                <img class="image center" src="[[data/thumbnails]]/{~hash~}"/>
-              </a>
-            </div>
-            <div class="card-content">
-              #{~id~} - {~width~}x{~height~}<br/>
-              <a href="#{~uploader_id~}">{~uploader~}</a>
-            </div>
-          </div>
-        </div>
-      [~~]
-    </div>
-    <hr/>
-    <h3 class="title is-5">{>similar_colors_title<}</h3>
-    <div class="columns is-multiline is-mobile">
-      [~colors~]
-        <div class="column is-6-mobile is-4-tablet is-4-desktop">
-          <div class="card">
-            <div class="card-image">
-              <a href="[[posts/show]]?id={~id~}">
-                <img class="image center" src="[[data/thumbnails]]/{~hash~}"/>
-              </a>
-            </div>
-            <div class="card-content">
-              #{~id~} - {~width~}x{~height~}<br/>
-              <a href="#{~uploader_id~}">{~uploader~}</a>
+    {?isImage?}
+      <h3 class="title is-5">{>similar_images_title<}</h3>
+      <div class="columns is-multiline is-mobile">
+        [~similars~]
+          <div class="column is-6-mobile is-4-tablet is-4-desktop">
+            <div class="card">
+              <div class="card-image">
+                <a href="[[posts/show]]?id={~id~}">
+                  <img class="image center" src="[[data/thumbnails]]/{~hash~}"/>
+                </a>
+              </div>
+              <div class="card-content">
+                #{~id~} - {~width~}x{~height~}<br/>
+                <a href="#{~uploader_id~}">{~uploader~}</a>
+              </div>
             </div>
           </div>
-        </div>
-      [~~]
-    </div>
-    <hr/>
+        [~~]
+      </div>
+      <hr/>
+      <h3 class="title is-5">{>similar_colors_title<}</h3>
+      <div class="columns is-multiline is-mobile">
+        [~colors~]
+          <div class="column is-6-mobile is-4-tablet is-4-desktop">
+            <div class="card">
+              <div class="card-image">
+                <a href="[[posts/show]]?id={~id~}">
+                  <img class="image center" src="[[data/thumbnails]]/{~hash~}"/>
+                </a>
+              </div>
+              <div class="card-content">
+                #{~id~} - {~width~}x{~height~}<br/>
+                <a href="#{~uploader_id~}">{~uploader~}</a>
+              </div>
+            </div>
+          </div>
+        [~~]
+      </div>
+      <hr/>
+    {??}
     <h3 class="title is-5">{>similar_tags_title<}</h3>
     <div class="columns is-multiline is-mobile">
       [~similarTagsPosts~]

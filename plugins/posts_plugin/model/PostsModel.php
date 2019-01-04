@@ -273,17 +273,25 @@ SQL
     $ext = pathinfo($fileName, PATHINFO_EXTENSION);
 
     $size = filesize($path);
+
     $hash = md5_file($path);
 
     if(file_exists('data/posts/' . $hash)) {
       return 3;
     }
 
-    $width = null;
-    $height = null;
+    $width = 0;
+    $height = 0;
+
+    $isPicture = false;
 
     if(($ext === 'jpg') || ($ext === 'png') || ($ext === 'bmp') || ($ext === 'gif')) {
+      $isPicture = true;
       list($width, $height) = getimagesize($path);
+    } else {
+      $dim = Plugins::callFunction('video_plugin', 'getSize', $path);
+      $width = $dim['width'];
+      $height = $dim['height'];
     }
 
     $db = $this->getInstance();
@@ -295,8 +303,12 @@ SQL
       return 4;
     }
 
-    // Compute perceptual hash
-    $perceptualHash = Plugins::callFunction('image_plugin', 'createPerceptualHash', $path);
+    if($isPicture === true) {
+      // Compute perceptual hash
+      $perceptualHash = Plugins::callFunction('image_plugin', 'createPerceptualHash', $path);
+    } else {
+      $perceptualHash = "0";
+    }
 
     $fetched = $req->fetch();
     $extId = $fetched['id'];
@@ -342,20 +354,28 @@ SQL
     $postId = $db->lastInsertId();
 
     // colors
-    $colors = Plugins::callFunction('image_plugin', 'getMainColors', $path);
+    if($isPicture) {
+      $colors = Plugins::callFunction('image_plugin', 'getMainColors', $path);
 
-    if($colors !== false) {
-      foreach($colors as $color) {
-        $req = $db->prepare('INSERT INTO post_colors (post_id, color) VALUES (:post_id, :color)');
-        $ret = $req->execute(array('post_id' => $postId, 'color' => $color));
+      if($colors !== false) {
+        foreach($colors as $color) {
+          $req = $db->prepare('INSERT INTO post_colors (post_id, color) VALUES (:post_id, :color)');
+          $ret = $req->execute(array('post_id' => $postId, 'color' => $color));
+        }
       }
-    }
 
-    // Add tags
-    // Create thumbnail
-    $ret = Plugins::callFunction('image_plugin', 'createThumbnail', $path, 'data/thumbnails/' . $hash);
-    if(!$ret) {
-      return 6;
+      // Add tags
+      // Create thumbnail
+      $ret = Plugins::callFunction('image_plugin', 'createThumbnail', $path, 'data/thumbnails/' . $hash);
+      if(!$ret) {
+        return 6;
+      }
+    } else {
+      // if video
+      $ret = Plugins::callFunction('video_plugin', 'createThumbnail', $path, 'data/thumbnails/' . $hash);
+      if(!$ret) {
+        return 6;
+      }
     }
 
     // Move file

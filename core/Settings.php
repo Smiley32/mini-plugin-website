@@ -9,7 +9,7 @@ class Settings {
     $file = fopen('settings.conf', 'r');
     if($file) {
       while(($line = fgets($file)) !== false) {
-        if(preg_match('|^\s*([-a-zA-Z0-9]+)\s*:\s*([-/a-zA-Z0-9]+)\s*$|', $line, $matches) === 1) {
+        if(preg_match('|^\s*([-a-zA-Z0-9]+)\s*:\s*([-/\\\:.a-zA-Z0-9]+)\s*$|', $line, $matches) === 1) {
           self::$_settings[$matches[1]] = $matches[2];
         }
       }

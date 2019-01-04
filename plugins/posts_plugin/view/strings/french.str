@@ -40,3 +40,5 @@ click_picture: Cliquer sur l'image à laquelle vous souahitez ajouter un mot-cl�
 add_link: Ajouter un lien
 post_number: Numéro du post
 links: Liens
+error_no_js: Pour visionner cette vidéo, veuillez activer JavaScript, et utiliser un navigateur supportant les vidéos HTML5
+video_problem: Impossible de visionner la vidéo ?
