@@ -48,6 +48,7 @@ CREATE TABLE posts (
   uploader_id INT         NOT NULL,
   perceptual_hash BIGINT  NOT NULL,
   description TEXT,
+  score       INT         DEFAULT 0,
   PRIMARY KEY (id),
   FOREIGN KEY (type_ext_id) REFERENCES file_ext(id),
   FOREIGN KEY (uploader_id) REFERENCES users(id)

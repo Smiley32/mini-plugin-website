@@ -6,6 +6,9 @@ class Tree {
 
   private $_childs = null;
 
+  private $_order = 'posts.id';
+  private $_desc = true;
+
   public function __construct($value, $evaluate = false) {
     if(empty($value)) {
       // ...
@@ -138,6 +141,16 @@ class Tree {
     return $req;
   }
 
+  public function getOrderBySql() {
+    $sql =  ' ORDER BY ' . $this->_order . ' ';
+    if($this->_desc) {
+      $sql .= 'DESC ';
+    } else {
+      $sql .= 'ASC ';
+    }
+    return $sql;
+  }
+
   public function toSQL() {
     if(null == $this->_value) {
       return '';
@@ -189,6 +202,34 @@ class Tree {
 
     $ret = ' 1 ';
     switch($keyword) {
+      case 'order':
+      case 'sort':
+        switch($value) {
+          case 'score':
+            $this->_order = 'posts.score';
+            $this->_desc = true;
+            break;
+          case 'size':
+            $this->_order = 'posts.size';
+            $this->_desc = true;
+            break;
+          case 'width':
+            $this->_order = 'posts.width';
+            $this->_desc = true;
+            break;
+          case 'height':
+            $this->_order = 'posts.height';
+            $this->_desc = true;
+            break;
+          case 'id':
+            $this->_order = 'posts.id';
+            $this->_desc = true;
+            break;
+        }
+        break;
+      case 'score':
+        $ret = ' posts.score' . $sqlSeparator . $value . ' ';
+        break;
       case 'size':
         $ret = ' posts.size' . $sqlSeparator . $value . ' ';
         break;
@@ -244,7 +285,7 @@ class PostsModel extends Database {
     $postCount = 24;
     $offset = ($page - 1) * $postCount;
 
-    $sql .= " ORDER BY posts.id DESC LIMIT $offset, $postCount";
+    $sql .= $tree->getOrderBySql() . "LIMIT $offset, $postCount";
 
     $db = $this->getInstance();
     $req = $db->prepare($sql);

@@ -2,6 +2,21 @@
 
 class PostsModel extends Database {
 
+  public function increaseScore($id) {
+    $id = (int)$id;
+
+    $db = $this->getInstance();
+
+    $req = $db->prepare('UPDATE posts SET score=score+1 WHERE id=:id');
+    $ret = $req->execute(array('id' => $id));
+
+    if(!$ret) {
+      return false;
+    }
+
+    return true;
+  }
+
   public function getLinks($src) {
     $src = (int)$src;
 

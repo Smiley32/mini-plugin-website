@@ -25,6 +25,7 @@ hash: Hash:
 date: Date:
 uploader: Uploader:
 rating: Rating:
+score: Score:
 safe_rating: Safe
 questionable_rating: Questionable
 explicit_rating: Explicit

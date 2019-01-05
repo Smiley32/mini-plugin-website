@@ -41,6 +41,10 @@ class PostsController extends Controller {
   protected function action_show() {
     $id = $this->checkGet('id');
 
+    if($id === false) {
+      return;
+    }
+
     $this->setTitle('{>post<} ' . $id);
 
     $model = $this->getModel();
@@ -132,6 +136,7 @@ class PostsController extends Controller {
 
     $this->data['dimensions'] = $post['width'] . ' x ' . $post['height'];
     $this->data['extension'] = $post['ext'];
+    $this->data['score'] = $post['score'];
 
     switch($post['rating']) {
       case 1:
@@ -206,6 +211,8 @@ class PostsController extends Controller {
 
     $this->addStyle('post.css');
     $this->addScript('show.js');
+
+    $model->increaseScore($id);
   }
 
   private function _decode($chunk) {
