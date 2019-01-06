@@ -4,19 +4,6 @@
   </div>
 [~~]
 
-<aside class="menu" id="tagPanel">
-  <form id="tagger" method="POST">
-    {{tags/tagger}}
-
-    <input id="toTrigger" type="submit" value="{>update<}" name="submit" class="button is-warning" />
-  </form>
-</aside>
-
-<div id="floating">
-  <button class="button toggleTags" onclick="toggleTags()">{>toggle_tags<}</button>
-  <button class="button is-success" onclick="toTrigger.click()">{>update<}</button>
-</div>
-
 <div id="pageContent">
   {?links?}
     <div class="links">

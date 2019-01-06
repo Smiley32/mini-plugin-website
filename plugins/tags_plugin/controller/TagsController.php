@@ -1,6 +1,10 @@
 <?php
 
 class TagsController extends Controller {
+  protected function action_search() {
+    $this->addScript('search.js');
+  }
+
   protected function action_tagger() {
     $this->addScript('tagger.js');
     $this->addStyle('tagger.css');
