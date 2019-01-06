@@ -4,6 +4,8 @@ var elmtComments = document.getElementById('commentsContent');
 var elmtCommentsTab = document.getElementById('comments');
 var elmtMore = document.getElementById('moreContent');
 var elmtMoreTab = document.getElementById('more');
+var elmtTags = document.getElementById('tagsContent');
+var elmtTagsTab = document.getElementById('tagsItem');
 var elmtEdit = document.getElementById('editContent');
 var elmtEditTab = document.getElementById('edit');
 var elmtImageClick = document.getElementById('imageClick');
@@ -18,6 +20,7 @@ var selectedSuggestion = null;
     elmtDescriptionTab.classList.add('is-active');
     elmtCommentsTab.classList.remove('is-active');
     elmtMoreTab.classList.remove('is-active');
+    elmtTagsTab.classList.remove('is-active');
     if(null != elmtEditTab) {
       elmtEditTab.classList.remove('is-active');
     }
@@ -25,6 +28,7 @@ var selectedSuggestion = null;
     elmtDescription.style.display = 'block';
     elmtComments.style.display = 'none';
     elmtMore.style.display = 'none';
+    elmtTags.style.display = 'none';
     if(null != elmtEdit) {
       elmtEdit.style.display = 'none';
     }
@@ -35,6 +39,7 @@ var selectedSuggestion = null;
     elmtDescriptionTab.classList.remove('is-active');
     elmtCommentsTab.classList.add('is-active');
     elmtMoreTab.classList.remove('is-active');
+    elmtTagsTab.classList.remove('is-active');
     if(null != elmtEditTab) {
       elmtEditTab.classList.remove('is-active');
     }
@@ -42,6 +47,7 @@ var selectedSuggestion = null;
     elmtDescription.style.display = 'none';
     elmtComments.style.display = 'block';
     elmtMore.style.display = 'none';
+    elmtTags.style.display = 'none';
     if(null != elmtEdit) {
       elmtEdit.style.display = 'none';
     }
@@ -51,6 +57,7 @@ var selectedSuggestion = null;
     elmtDescriptionTab.classList.remove('is-active');
     elmtCommentsTab.classList.remove('is-active');
     elmtMoreTab.classList.add('is-active');
+    elmtTagsTab.classList.remove('is-active');
     if(null != elmtEditTab) {
       elmtEditTab.classList.remove('is-active');
     }
@@ -58,6 +65,25 @@ var selectedSuggestion = null;
     elmtDescription.style.display = 'none';
     elmtComments.style.display = 'none';
     elmtMore.style.display = 'block';
+    elmtTags.style.display = 'none';
+    if(null != elmtEdit) {
+      elmtEdit.style.display = 'none';
+    }
+  });
+
+  elmtTagsTab.addEventListener('click', function(event) {
+    elmtDescriptionTab.classList.remove('is-active');
+    elmtCommentsTab.classList.remove('is-active');
+    elmtMoreTab.classList.remove('is-active');
+    elmtTagsTab.classList.add('is-active');
+    if(null != elmtEditTab) {
+      elmtEditTab.classList.remove('is-active');
+    }
+
+    elmtDescription.style.display = 'none';
+    elmtComments.style.display = 'none';
+    elmtMore.style.display = 'none';
+    elmtTags.style.display = 'block';
     if(null != elmtEdit) {
       elmtEdit.style.display = 'none';
     }
@@ -69,10 +95,12 @@ var selectedSuggestion = null;
       elmtCommentsTab.classList.remove('is-active');
       elmtMoreTab.classList.remove('is-active');
       elmtEditTab.classList.add('is-active');
+      elmtTagsTab.classList.remove('is-active');
 
       elmtDescription.style.display = 'none';
       elmtComments.style.display = 'none';
       elmtMore.style.display = 'none';
+      elmtTags.style.display = 'none';
       if(null != elmtEdit) {
         elmtEdit.style.display = 'block';
       }
@@ -90,6 +118,8 @@ var selectedSuggestion = null;
       img.addEventListener('load', setImageWidth);
     }
   }
+
+  get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
 }
 
 function setImageWidth() {
@@ -103,9 +133,8 @@ function setImageWidth() {
 function displayTagsOnImage(json) {
   var parsed = JSON.parse(json);
 
-  // console.log(parsed);
-
   var html = '';
+  var html2 = '';
 
   for(var i = 0; i < parsed.length; i++) {
     html += '<div class="one-tag">';
@@ -115,9 +144,20 @@ function displayTagsOnImage(json) {
     html += '<a class="tag is-delete" onclick="removeTagFromPost(event, \'' + parsed[i].tag + '\')"></a>';
     html += '</div>';
     html += '</div>';
+
+    html2 += '<div class="control">';
+    html2 += '<div class="tags has-addons">';
+    html2 += '<a class="tag is-link">' + parsed[i].tag + '</a>';
+    html2 += '<a class="tag is-delete" onclick="removeTagFromPost(event, \'' + parsed[i].tag + '\')"></a>';
+    html2 += '</div>';
+    html2 += '</div>';
   }
 
-  document.getElementById('tag-container').innerHTML = html;
+  if(null != document.getElementById('tag-container')) {
+    document.getElementById('tag-container').innerHTML = html;
+  }
+
+  document.getElementById('tagLabels').innerHTML = html2;
 }
 
 function getPosition(element) {
@@ -185,16 +225,26 @@ function confirmFloatingTagger() {
     if(tag != '') {
       tagElement.value = "";
 
-      // console.log("Click x: " + globalXClick + "% ; y: " + globalYClick + "%");
-
-      // console.log(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick);
-      get(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick, function(json) {
-        get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
-      });
+      addTag(tag);
 
       hideFloatingTagger();
     }
   }
+}
+
+function onAddTagButtonClick() {
+  globalXClick = 0;
+  globalYClick = 0;
+  var input = document.getElementById('addTagInput');
+
+  addTag(input.value);
+  input.value = '';
+}
+
+function addTag(tag) {
+  get(g_baseUrl + 'posts/api?post=' + postId + '&tag=' + tag + '&x=' + globalXClick + '&y=' + globalYClick, function(json) {
+    get(g_baseUrl + '/tags/api?post=' + postId, displayTagsOnImage);
+  });
 }
 
 function hideFloatingTagger() {
