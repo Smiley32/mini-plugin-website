@@ -14,6 +14,7 @@ var globalXClick = -1;
 var globalYClick = -1;
 
 var selectedSuggestion = null;
+var selectedSuggestion2 = null;
 
 {
   elmtDescriptionTab.addEventListener('click', function(event) {
@@ -185,8 +186,16 @@ function hideAutoCompleteList() {
   document.querySelector('.tagger-autocomp-menu').classList.add('hided');
 }
 
+function hideAutoCompleteList2() {
+  document.querySelector('.addTagMenu').classList.add('hided');
+}
+
 function showAutoCompleteList() {
   document.querySelector('.tagger-autocomp-menu').classList.remove('hided');
+}
+
+function showAutoCompleteList2() {
+  document.querySelector('.addTagMenu').classList.remove('hided');
 }
 
 function updateTaggerAutocomp() {
@@ -196,10 +205,23 @@ function updateTaggerAutocomp() {
   }
 }
 
+function updateTaggerAutocomp2() {
+  var e = document.getElementById('addTagInput');
+  if(e.value != '') {
+    get(g_baseUrl + 'tags/api?search=' + e.value + '&category=Default', updateTaggerAutocompCallback2);
+  }
+}
+
 function setTagInInput(tag) {
   var e = document.getElementById('floating-input-tag');
   e.value = tag;
   hideAutoCompleteList();
+}
+
+function setTagInInput2(tag) {
+  var e = document.getElementById('addTagInput');
+  e.value = tag;
+  hideAutoCompleteList2();
 }
 
 function updateTaggerAutocompCallback(json) {
@@ -213,6 +235,21 @@ function updateTaggerAutocompCallback(json) {
   document.getElementById('tagger-autocomp-list').innerHTML = html;
   selectedSuggestion = null;
   showAutoCompleteList();
+}
+
+function updateTaggerAutocompCallback2(json) {
+  var parsed = JSON.parse(json);
+
+  console.log(parsed);
+
+  var html = '';
+  for(var i = 0; i < parsed.length && i < 15; i++) {
+    html += '<li><a class="suggestion" onclick="setTagInInput2(\'' + parsed[i].tag + '\')">' + parsed[i].tag + '</a></li>'
+  }
+
+  document.getElementById('addTagList').innerHTML = html;
+  selectedSuggestion2 = null;
+  showAutoCompleteList2();
 }
 
 var currentTag = null;
