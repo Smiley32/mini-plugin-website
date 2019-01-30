@@ -261,6 +261,44 @@ SQL
     return $req->fetchAll();
   }
 
+  public function regenThumb($postId) {
+    $postId = (int)$postId;
+
+    $post = $this->getPost($postId);
+
+    $ext = $post['ext'];
+    $path = 'data/posts/' . $post['hash'];
+
+    $isPicture = ($ext === 'jpg') || ($ext === 'png') || ($ext === 'bmp') || ($ext === 'gif');
+
+    if($isPicture) {
+      list($width, $height) = getimagesize($path);
+    } else {
+      $dim = Plugins::callFunction('video_plugin', 'getSize', $path);
+      $width = $dim['width'];
+      $height = $dim['height'];
+    }
+
+    // remove old thumbnail
+    unlink('data/thumbnails/' . $post['hash']);
+
+    // Create thumbnail
+    if($isPicture) {
+      $ret = Plugins::callFunction('image_plugin', 'createThumbnail', $path, 'data/thumbnails/' . $post['hash']);
+      if(!$ret) {
+        return 6;
+      }
+    } else {
+      // if video
+      $ret = Plugins::callFunction('video_plugin', 'createThumbnail', $path, 'data/thumbnails/' . $post['hash']);
+      if(!$ret) {
+        return 6;
+      }
+    }
+
+    return 0;
+  }
+
   /// $params[0]: fileName (in uploads/)
   /// $params[1]: $tags // Always tagme yet
   /// Errors:

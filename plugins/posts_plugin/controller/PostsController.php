@@ -2,6 +2,23 @@
 
 class PostsController extends Controller {
 
+  protected function action_regenThumb() {
+    $this->setAjax(true);
+
+    if(!isset($_GET['id']) || $_GET['id'] == '') {
+      $this->_reserved['body'] = '{"error": 1}';
+      return;
+    }
+
+    $user = Plugins::callFunction("users_plugin", "getCurrentUser");
+    if($user != null) {
+      $ret = $this->getModel()->regenThumb($_GET['id']);
+      $this->_reserved['body'] = '{"error": ' . $ret . '}';
+    } else {
+      $this->_reserved['body'] = '{"error": 2}';
+    }
+  }
+
   protected function action_add() {
     $this->addScript('add.js');
     $this->addStyle('post.css');

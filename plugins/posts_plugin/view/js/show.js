@@ -432,3 +432,9 @@ function createLink() {
     location.reload();
   });
 }
+
+function regenThumb() {
+  get(g_baseUrl + '/posts/regenThumb?id=' + postId, function(json) {
+    console.log(json);
+  });
+}
