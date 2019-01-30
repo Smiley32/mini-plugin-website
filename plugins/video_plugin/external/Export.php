@@ -57,7 +57,7 @@ class Export_video_plugin {
 		$max = floatval($output);
 		$randomSec = rand(0, (int)$max);
 
-		$cmd = "$ffmpeg -i $videoPath -ss $randomSec -vframes 1 $thumbnailPath.jpg";
+		$cmd = "$ffmpeg -ss $randomSec -i $videoPath -vframes 1 $thumbnailPath.jpg";
 		$output = shell_exec($cmd);
 
 		Plugins::callFunction('image_plugin', 'createThumbnail', $thumbnailPath . '.jpg', $thumbnailPath);
