@@ -127,6 +127,25 @@ SQL
     return !$ret ? false : $req->fetchAll();
   }
 
+  public function searchTag($tag) {
+    $tag = '%' . $tag . '%';
+
+    $db = $this->getInstance();
+    $req = $db->prepare(<<<SQL
+SELECT
+  tags.*
+FROM
+  tags
+WHERE
+  tags.tag LIKE :tag
+ORDER BY tags.tag
+SQL
+);
+    $ret = $req->execute(array('tag' => $tag));
+
+    return !$ret ? false : $req->fetchAll();
+  }
+
   public function getCategories() {
     $db = $this->getInstance();
 

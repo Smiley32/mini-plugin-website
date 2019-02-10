@@ -56,6 +56,14 @@ var url = g_baseUrl + 'posts/upload';
   fileReader = new FileReader();
   file = elmt.files[0];
 
+  if(file.size < 10 * sliceSize) {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      document.getElementById('sampleImg').src = reader.result;
+    }
+    reader.readAsDataURL(file);
+  }
+
   document.getElementById('file_button').classList.remove('is-success');
   document.getElementById('file_button').classList.add('is-warning');
   document.getElementById('file_button').disabled = true;

@@ -125,7 +125,7 @@ class Tree {
       return $this->_childs[0]->validate() && $this->_childs[1]->validate();
     }
 
-    $this->_value = preg_replace('/[^a-zA-Z0-9><_ :]/', '', $this->_value);
+    $this->_value = preg_replace('/[^a-zA-Z0-9><_ :@]/', '', $this->_value);
     return true;
   }
 

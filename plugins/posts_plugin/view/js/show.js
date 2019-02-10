@@ -201,14 +201,14 @@ function showAutoCompleteList2() {
 function updateTaggerAutocomp() {
   var e = document.getElementById('floating-input-tag');
   if(e.value != '') {
-    get(g_baseUrl + 'tags/api?search=' + e.value + '&category=Default', updateTaggerAutocompCallback);
+    get(g_baseUrl + 'tags/api?search=' + e.value, updateTaggerAutocompCallback);
   }
 }
 
 function updateTaggerAutocomp2() {
   var e = document.getElementById('addTagInput');
   if(e.value != '') {
-    get(g_baseUrl + 'tags/api?search=' + e.value + '&category=Default', updateTaggerAutocompCallback2);
+    get(g_baseUrl + 'tags/api?search=' + e.value, updateTaggerAutocompCallback2);
   }
 }
 

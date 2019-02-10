@@ -327,7 +327,7 @@ SQL
 
     $size = filesize($path);
 
-    $hash = md5_file($path);
+    $hash = md5(file_get_contents($path, false, NULL, 0, 10000));
 
     if(file_exists('data/posts/' . $hash)) {
       return 3;

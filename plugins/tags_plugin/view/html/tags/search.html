@@ -1,12 +1,16 @@
 <div class="navbar-item">
-	<div class="field has-addons">
+	<div class="field has-addons isRelative">
 		<div class="control">
-			<input id="searchTagInput" class="input" type="text" placeholder="tag search">
+			<input autocomplete="off" oninput="searchTagsAutoComplete()" id="searchTagInput" onkeydown="onInputKeyDownSearch(event);" class="input" type="text" placeholder="tag search">
 		</div>
 		<div class="control">
-			<a class="button is-info" onclick="searchTags()">
+			<a id="searchInputButton" class="button is-info" onclick="searchTags()">
 				{>search<}
 			</a>
+		</div>
+		<div class="menu search-autocomp-menu hided">
+			<ul class="menu-list" id="search-autocomp-list">
+			</ul>
 		</div>
 	</div>
 </div>

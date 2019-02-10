@@ -1,0 +1,13 @@
+.isRelative {
+	position: relative;
+}
+
+.search-autocomp-menu {
+	position: absolute;
+	background-color: white;
+	top: 100%;
+}
+
+.hided {
+	display: none;
+}

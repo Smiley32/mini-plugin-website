@@ -3,6 +3,7 @@
 class TagsController extends Controller {
   protected function action_search() {
     $this->addScript('search.js');
+    $this->addStyle('search.css');
   }
 
   protected function action_tagger() {
@@ -59,6 +60,10 @@ class TagsController extends Controller {
       } else {
         $this->_reserved['body'] = json_encode($tags);
       }
+    } elseif(isset($_GET['search'])) {
+      // Search tags
+      $tags = $model->searchTag($_GET['search']);
+      $this->_reserved['body'] = json_encode($tags);
     } else {
       $this->_reserved['body'] = '{"error": 42}';
     }
