@@ -24,7 +24,7 @@ class Settings {
     return self::$_page;
   }
 
-  public static function redirect($controller, $action) {
+  public static function redirect($controller, $action, $data = '') {
     $indexUrl = $_SERVER['PHP_SELF'];
     $indexUrlLength = strlen($indexUrl);
 
@@ -37,7 +37,7 @@ class Settings {
     }
     $baseUrl = substr($indexUrl, 0, $end);
 
-    header("Location: $baseUrl/$controller/$action");
+    header("Location: $baseUrl/$controller/$action$data");
     exit();
   }
 
@@ -59,6 +59,22 @@ class Settings {
 
   public static function get404Route() {
     return self::getSetting('404-route');
+  }
+
+  public static function getBaseUrl() {
+    $indexUrl = $_SERVER['PHP_SELF'];
+    $indexUrlLength = strlen($indexUrl);
+
+    $dirs = array();
+
+    $end = 0;
+    for($i = 0; $i < $indexUrlLength; $i++) {
+      if($indexUrl[$i] == '/') {
+        $end = $i;
+        // This file is in a directory
+      }
+    }
+    return substr($indexUrl, 0, $end);
   }
 }
 
