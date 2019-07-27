@@ -163,11 +163,32 @@ class View {
         $ret = '';
         if(isset($data[$m[1]])) {
           foreach($data[$m[1]] as $d) {
+
+            $tmp = preg_replace_callback(
+              '/\[\?(.+?)\?\](!?.*?)\[\?\?\]/ms'
+              , function($m) use ($d) {
+                if($m[1][0] == '!') {
+                  $index = substr($m[1], 1);
+                  if(!$d[$index]) {
+                    return $m[2];
+                  } else {
+                    return '';
+                  }
+                } else {
+                  if($d[$m[1]]) {
+                    return $m[2];
+                  } else {
+                    return '';
+                  }
+                }
+              }, $m[2]
+            );
+
             $ret .= preg_replace_callback(
               '/{~([_a-zA-Z0-9]+)~}/'
               , function($m) use ($d) {
                 return (string) $d[$m[1]];
-              }, $m[2]
+              }, $tmp
             );
           }
         }
